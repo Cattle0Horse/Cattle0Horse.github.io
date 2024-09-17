@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>CattleHorse&#39;s Blog</title>
+  <icon>https://www.gravatar.com/avatar/44d01656b98350008bfe414e69ef01d2</icon>
+  <subtitle>Lifelong Learning</subtitle>
+  <link href="https://github.com/Cattle0Horse/Cattle0Horse.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://github.com/Cattle0Horse/Cattle0Horse.github.io/"/>
+  <updated>2024-09-17T16:32:08.521Z</updated>
+  <id>https://github.com/Cattle0Horse/Cattle0Horse.github.io/</id>
+  
+  <author>
+    <name>Cattle Horse</name>
+    <email>cattle0horse@gmail.com</email>
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HelloWorld</title>
+    <link href="https://github.com/Cattle0Horse/Cattle0Horse.github.io/2024/09/18/HelloWorld/"/>
+    <id>https://github.com/Cattle0Horse/Cattle0Horse.github.io/2024/09/18/HelloWorld/</id>
+    <published>2024-09-17T16:23:58.000Z</published>
+    <updated>2024-09-17T16:32:08.521Z</updated>
+    
+    <content type="html"><![CDATA[<p>This website was created on September 17, 2024.</p><p>I hope I can learn for life.</p><p>Fries on the pier!</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;This website was created on September 17, 2024.&lt;/p&gt;
+&lt;p&gt;I hope I can learn for life.&lt;/p&gt;
+&lt;p&gt;Fries on the pier!&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="hello-world" scheme="https://github.com/Cattle0Horse/Cattle0Horse.github.io/categories/hello-world/"/>
+    
+    
+    <category term="test" scheme="https://github.com/Cattle0Horse/Cattle0Horse.github.io/tags/test/"/>
+    
+  </entry>
+  
+</feed>
