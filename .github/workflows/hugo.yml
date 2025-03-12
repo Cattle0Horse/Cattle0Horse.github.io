@@ -31,6 +31,7 @@ jobs:
               uses: peaceiris/actions-gh-pages@v3
               with:
                   PERSONAL_TOKEN: ${{ secrets.GH_PAGE_ACTION_TOKEN  }}
-                  EXTERNAL_REPOSITORY: Cattle0Horse/Cattle0Horse.github.io
+                  EXTERNAL_REPOSITORY: Cattle0Horse/Cattle0Horse.github.io # Github Pages repo
+                  PUBLISH_BRANCH: gh-pages
                   PUBLISH_DIR: ./public
                   commit_message: ${{ github.event.head_commit.message }}
