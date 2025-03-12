@@ -14,20 +14,21 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
               with:
                   submodules: true
                   fetch-depth: 0
 
             - name: Setup Hugo
-              uses: peaceiris/actions-hugo@v2
+              uses: peaceiris/actions-hugo@v3
               with:
                   hugo-version: "latest"
+                  extended: true
 
-            - name: Build Web
-              run: hugo
+            - name: Build
+              run: hugo --minify
 
-            - name: Deploy Web
+            - name: Deploy
               uses: peaceiris/actions-gh-pages@v3
               with:
                   PERSONAL_TOKEN: ${{ secrets.GH_PAGE_ACTION_TOKEN  }}
