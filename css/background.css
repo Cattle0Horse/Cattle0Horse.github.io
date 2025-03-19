@@ -1,0 +1,21 @@
+/*
+https://github.com/leovan/leovan.me/blob/main/static/css/style.css
+*/
+@media screen and (min-width: 960px) {
+  html::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    display: block;
+    background: url(/images/little-bear-light.png) no-repeat 50% 50%;
+    background-size: cover;
+  }
+
+  /* html.dark::after {
+    background: url(/images/web/little-bear-dark.png) no-repeat 50% 50%;
+  } */
+}
