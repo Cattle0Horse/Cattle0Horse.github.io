@@ -1,7 +1,7 @@
 ---
 title: "1.计算机系统漫步"
 date: 2025-03-19
-categories: ["tech"]
+categories: ["Tech"]
 draft: false
 tags: ["CSAPP"]
 ---
