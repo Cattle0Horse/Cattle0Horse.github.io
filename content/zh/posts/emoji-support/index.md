@@ -5,6 +5,7 @@ author: Hugo Authors
 description: Hugo 表情符号使用指南
 tags:
     - emoji
+draft: true
 ---
 
 Emoji can be enabled in a Hugo project in a number of ways.

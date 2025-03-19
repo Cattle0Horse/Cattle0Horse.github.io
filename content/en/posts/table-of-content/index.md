@@ -2,6 +2,7 @@
 title: Table of content
 date: 2023-05-02
 description: Setup table of content in Hugo blog awesome theme
+draft: true
 ---
 
 ## Table of content
@@ -26,7 +27,7 @@ To enable ToC on all posts (globally) set parameter `toc` to `true` in `hugo.tom
 ```
 
 To disable ToC globally, simply ignore the `toc` parameter or set it to `false`.
- 
+
 ## Enable table of content on certain posts
 
 To enable ToC on certain posts set parameter `toc` to `true` in post settings.
