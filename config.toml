@@ -1,0 +1,35 @@
+baseURL = "https://example.com"
+languageCode = "en-us"
+title = "Example YinYong Blog"
+theme = "yinyang"
+DefaultContentLanguage = "cn"
+
+[author]
+  name = "CattleHorse"
+  homepage = "https://github.com/cattle0horse"
+
+[languages]
+#   [languages.en]
+#     contentDir = "content/en"
+#     languageName = "English"
+#     weight = 1
+  [languages.cn]
+    contentDir = "content/cn"
+    languageName = "简体中文"
+    weight = 2
+
+[params]
+disqus = "Cattle0Horse" # disqus account name
+extraHead = ''
+mainSections = ["posts"]
+headTitle = "CattleHorse"
+# extraCSSFiles = ["css/foo.css", "css/bar.css"]
+
+# footer
+[[params.socials]]
+name = "RSS"
+link = "/index.xml"
+
+[[params.socials]]
+name = "About"
+link = "https://github.com/cattle0horse"

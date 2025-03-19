@@ -1,11 +1,8 @@
 ---
 title: "1.计算机系统漫步"
-created: 2025-03-19 11:38:23
-modified: 2025-03-19 16:00:21
-author: "Cattle Horse"
-description: 以“HelloWorld”程序的生命周期为线索，对计算机系统的主要概念进行整体介绍
 date: 2025-03-19
-tags: [计算机系统]
+categories: []
+draft: false
 ---
 
 ## 1.计算机系统漫游
