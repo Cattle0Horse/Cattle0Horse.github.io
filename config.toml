@@ -34,6 +34,7 @@ DefaultContentLanguage = "cn"
   favicon = "/logo.png"
   lazyImage = true
   # extraCSSFiles = ["css/foo.css", "css/bar.css"]
+  extraCSSFiles = ["css/background.css"]
 
 # footer(通过CSS修改至header下方)
 [[params.socials]]
