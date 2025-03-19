@@ -1,6 +1,6 @@
 baseURL = "https://cattle0horse.github.io"
 languageCode = "en-us"
-title = "CattleHorse's Blog"
+title = "CattleHorse's Blog" # for rss
 theme = "yinyang"
 DefaultContentLanguage = "cn"
 
