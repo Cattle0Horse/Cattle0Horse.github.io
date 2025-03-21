@@ -164,7 +164,7 @@ Byte Ordering(字节序)：数据在内存中的排列形式，有大端法与�
 
 ## 参考资料
 
--   [【读薄 CSAPP】壹 数据表示 - 小土刀](../../../clippings/小土刀/读薄CSAPP/【读薄%20CSAPP】壹%20数据表示.md)
+-   [【读薄 CSAPP】壹 数据表示 - 小土刀](https://wdxtub.com/csapp/thin-csapp-1/2016/04/16/)
 -   [【CSAPP-深入理解计算机系统】2-1.信息的存储(上) - 九曲阑干](https://www.bilibili.com/video/BV1tV411U7N3)
 -   [【CSAPP-深入理解计算机系统】2-1.信息的存储(下) - 九曲阑干](https://www.bilibili.com/video/BV1DK4y1Y7Yi)
 -   [【CSAPP-深入理解计算机系统】2-2.整数的表示(上) - 九曲阑干](https://www.bilibili.com/video/BV1ba4y1E7qy)
