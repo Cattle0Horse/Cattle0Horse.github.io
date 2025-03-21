@@ -50,5 +50,5 @@ DefaultContentLanguage = "cn"
   name = "RSS"
   link = "/index.xml"
 [[params.socials]]
-  name = "About"
+  name = "Github"
   link = "https://github.com/cattle0horse"
