@@ -15,15 +15,23 @@ DefaultContentLanguage = "cn"
 #     weight = 1
 
 # 代码块
+# 公式 https://gohugo.io/content-management/mathematics/
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['$$', '$$']]
+          inline = [['$', '$']]
   [markup.highlight]
     guessSyntax = true
     noClasses = true
     style = "tango"
     tabWidth = 2
+
 
 [params]
   # disqus = "help"   # disqus account name
@@ -35,6 +43,7 @@ DefaultContentLanguage = "cn"
   lazyImage = true
   # extraCSSFiles = ["css/foo.css", "css/bar.css"]
   extraCSSFiles = ["css/background.css"]
+  math = false # 让frontmatter中的math=true时才生效
 
 # footer(通过CSS修改至header下方)
 [[params.socials]]
