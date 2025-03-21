@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>计算机组成原理 on CattleHorse's Blog</title><link>https://cattle0horse.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/</link><description>Recent content in 计算机组成原理 on CattleHorse's Blog</description><generator>Hugo</generator><language>cn</language><lastBuildDate>Fri, 21 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>2.信息的表示和处理</title><link>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</link><pubDate>Fri, 21 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</guid><description>&lt;h2 id="2信息的表示和处理">2.信息的表示和处理&lt;/h2>
+&lt;h3 id="信息的存储">信息的存储&lt;/h3>
+&lt;p>通常情况下，程序将内存视为一个非常大的数组，数组的元素由一个个字节组成，每个字节都有唯一的数字表示，称为 Address(地址)，所有地址的集合就称为 Virtual Address Space(虚拟地址空间)&lt;/p>
+&lt;p>&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221101744.png" alt="">
+&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221439235.png" alt="">&lt;/p>
+&lt;p>word size(字长): 决定了虚拟地址空间的大小，字长为 w 位的机器的虚拟地址空间 (程序使用连续的虚拟地址访问内存/磁盘) 的范围是 $0 \sim 2^{w} - 1$（因为每一个 bit 位有 0 和 1 两种取值）&lt;/p>
+&lt;ul>
+&lt;li>32 位系统（如 x86）的虚拟地址空间最大为 4GB($2^{32}$ Byte)&lt;/li>
+&lt;li>64 位系统（如 x86_64）：理论上可支持 16EB（$2^{64}$ Byte），但实际操作系统通常不会完全使用。例如：
+&lt;ul>
+&lt;li>Linux 默认使用 48 位地址空间（256TB）。&lt;/li>
+&lt;li>Windows 也类似，通常使用 47-48 位地址。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>大多数 64 位机器向后兼容，可以运行 32 位程序&lt;/p>
+&lt;p>32 位程序与 64 位程序的区别是编译过程，而不是运行机器的类型&lt;/p>
+&lt;p>在编译时可以通过编译选项指定生成 32 位的程序还是 64 位的程序
+&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222358537.png" alt="">&lt;/p>
+&lt;p>不同的数据类型可能占用不同的大小，同时对于不同位数的机器也有区别，很多数据类型都是占用了多个字节空间
+&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222809671.png" alt="">&lt;/p>
+&lt;blockquote>
+&lt;p>对于需要存储的数据，我们需要知道「该数据的地址是什么」以及「数据在内存中是如何排布的」&lt;/p>&lt;/blockquote>
+&lt;p>Byte Ordering(字节序)：数据在内存中的排列形式，有大端法与小端法两种方式，区别在于高位地址的位置&lt;/p>
+&lt;ul>
+&lt;li>Big Endian(大端法): 高位有效字节存储在低地址处 (优先读取最高有效字节)，更符合人类直觉，适用于网络传输和存储&lt;/li>
+&lt;li>Little Endian(小端法): 低位有效字节存储在低地址处 (优先读取最低有效字节)，适合计算机内部处理，主流 CPU 采用&lt;/li>
+&lt;/ul>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>&lt;strong>字节序&lt;/strong>&lt;/th>
+ &lt;th>&lt;strong>定义&lt;/strong>&lt;/th>
+ &lt;th>&lt;strong>示例（0x12345678）&lt;/strong>&lt;/th>
+ &lt;th>&lt;strong>常见用途&lt;/strong>&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;strong>Big Endian&lt;/strong>&lt;/td>
+ &lt;td>高位字节存低地址&lt;/td>
+ &lt;td>&lt;code>12 34 56 78&lt;/code>&lt;/td>
+ &lt;td>网络通信（TCP/IP）、部分 RISC 处理器（PowerPC、SPARC）、部分文件格式&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;strong>Little Endian&lt;/strong>&lt;/td>
+ &lt;td>低位字节存低地址&lt;/td>
+ &lt;td>&lt;code>78 56 34 12&lt;/code>&lt;/td>
+ &lt;td>x86、ARM 默认模式、Windows/Linux 处理&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250321155438902.png" alt="">&lt;/p></description></item></channel></rss>
