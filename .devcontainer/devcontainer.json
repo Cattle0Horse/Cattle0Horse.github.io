@@ -32,14 +32,12 @@
         // https://marketplace.visualstudio.com/items?itemName=kaellarkin.hugo-shortcode-syntax
         "kaellarkin.hugo-shortcode-syntax",
 
-        // "csstools.postcss",
-
-        // "esbenp.prettier-vscode",
-        // "tamasfe.even-better-toml",
+        "esbenp.prettier-vscode",
+        // "davidanson.vscode-markdownlint",
+        "mhutchie.git-graph",
+        "tamasfe.even-better-toml",
         // "naumovs.color-highlight",
         // "GitHub.vscode-pull-request-github",
-        // "eamodio.gitlens",
-        "davidanson.vscode-markdownlint",
         "streetsidesoftware.code-spell-checker"
       ]
     }
