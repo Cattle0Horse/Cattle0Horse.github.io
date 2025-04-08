@@ -1,3 +1,6 @@
 [submodule "themes/hugo-theme-yinyang"]
 	path = themes/yinyang
 	url = git@github.com:Cattle0Horse/hugo-theme-yinyang.git
+[submodule "themes/ladder"]
+	path = themes/ladder
+	url = git@github.com:Cattle0Horse/hugo-theme-ladder.git
