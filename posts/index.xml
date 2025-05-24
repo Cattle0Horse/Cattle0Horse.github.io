@@ -1,4 +1,65 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on CattleHorse's Blog</title><link>https://cattle0horse.github.io/posts/</link><description>Recent content in Posts on CattleHorse's Blog</description><generator>Hugo</generator><language>cn</language><lastBuildDate>Fri, 21 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>2.信息的表示和处理</title><link>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</link><pubDate>Fri, 21 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</guid><description>&lt;h2 id="2信息的表示和处理">2.信息的表示和处理&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on CattleHorse's Blog</title><link>https://cattle0horse.github.io/posts/</link><description>Recent content in Posts on CattleHorse's Blog</description><generator>Hugo</generator><language>cn</language><lastBuildDate>Sat, 24 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>代码大全2</title><link>https://cattle0horse.github.io/posts/code-complete-2/</link><pubDate>Sat, 24 May 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/code-complete-2/</guid><description>&lt;h2 id="ai-渐进式叙述">AI 渐进式叙述&lt;/h2>
+&lt;p>在软件开发的漫长旅程中，许多经验都指向一个共识：好的开发实践源于深刻的理解、缜密的规划与对人性的洞察。要想构建高质量的系统，仅仅掌握技术是不够的，还需要理解需求背后的心理动因、平衡理性与感性，以及不断优化每一层的决策。&lt;/p>
+&lt;h3 id="需求">需求&lt;/h3>
+&lt;p>起点往往是需求。虽然在表面上，需求似乎只是对功能的直接陈述，但实际上，它更像是浮出水面的冰山一角。其背后，是用户的欲望、动机、心理模式乃至生活经历。正如“更快的马”之于“更快的交通工具”那样，优秀的开发者应当具备穿透表面、直击本质的直觉能力。从用户的内在心理出发，才能更准确地识别其真实目标，并据此倒推出合适的设计、数据库结构、前后端逻辑及最终产品的形态。同时，由于不同用户间的需求常常存在冲突，调和这些冲突本身也是开发者必备的素养之一。尽管产品经理常担此重任，但开发者若也能参与需求分析，将更有效应对信息损失与沟通误差，从而提升交付质量。&lt;/p>
+&lt;h3 id="前期筹划">前期筹划&lt;/h3>
+&lt;p>在需求厘清后，前期的整体筹划也不可忽视。正所谓“谋定而后动”，尤其在大型项目中，初始阶段的良好规划往往决定了后续工作的成本和效率。当然，过度设计亦会抑制灵活性和团队动力，因此，“预见未来”与“逐步演化”之间的平衡尤为关键：小项目可依赖快速反馈维持动力，而大型系统则更需架构性的规划来防止混乱。&lt;/p>
+&lt;h3 id="架构与代码设计">架构与代码设计&lt;/h3>
+&lt;p>在这一阶段，信息隐藏、分而治之、自顶向下与自底向上的策略并行不悖。合理的抽象可以减轻认知负担，而正确的设计模式则为复杂问题提供了可复用的解决框架。例如，谨慎使用单例以防设计混淆、倾向组合优于继承、控制类间耦合以提升模块可维护性等。因为读代码的频率远高于写代码，牺牲读代码的便利换取写代码的便利不可取的&lt;/p>
+&lt;h3 id="代码改进">代码改进&lt;/h3>
+&lt;p>代码的复杂度往往反映了需求的质量。若需求本身模糊、庞杂，代码也难以清晰、精炼。因此，优化不仅限于代码层面，更涉及对需求的重审与裁剪。&lt;/p>
+&lt;p>软件工程的核心任务，其实是“以少量性能为代价换取结构清晰与语言高级性”。&lt;/p>
+&lt;p>高质量代码的改进路径，首先在于减少错误，从源头降低调试时间。其次，在必要时进行重构与优化。当旧代码难以处理时，引入新接口以黑盒方式适配，是一种现实而高效的做法。对于性能瓶颈，帕累托法则提醒我们：关键的少数点位决定了整体的性能表现。此时可以用更高效的语言重写、使用更复杂但更优的算法，甚至依赖代数恒等式等数学简化手段进行调优。但所有优化都需实测验证，避免编译器已做优化的重复劳动，并防止因过度优化而牺牲代码可读性。&lt;/p>
+&lt;h3 id="系统化考虑">系统化考虑&lt;/h3>
+&lt;p>随着项目规模扩大，额外的成本也成倍增长。沟通、管理、文档、协调等非编码活动所占比重迅速上升。因此，小项目中有效的做法在大项目中未必适用，反之亦然。开发者需要针对项目规模灵活调整方式，既要防止“大材小用”，也要避免“小题大做”。&lt;/p>
+&lt;p>与此同时，向上管理能力也越来越重要。在现实中，非技术背景或技术滞后的管理者并不罕见。开发者应学会“封装”自己，将细节隐藏，只呈现管理者所关注的核心目标。这不仅有助于提升沟通效率，也有助于项目整体的协作顺畅。&lt;/p>
+&lt;h3 id="软件匠艺">软件匠艺&lt;/h3>
+&lt;p>高质量开发也离不开良好的文档注释习惯。注释应贴近代码，避免因异步维护而产生误导。更重要的是，注释应记录那些代码无法直接呈现的“惊喜”，例如一次优化带来的巨大性能提升。这样的注释不仅利于团队协作，也方便未来的自己回顾与维护。&lt;/p>
+&lt;p>在整个过程中，个人性格与思维方式的作用也不可忽视。真正高效的开发，来自于对“懒惰”的正向理解：用工具避免重复劳动，用自动化替代繁杂流程。文明的发展从来不是勤劳的产物，而是人类想“少干一点”的结果。在编程中，这表现为将精力投入到最值得解决的问题上，避免形式主义的“忙碌”。&lt;/p>
+&lt;p>归根结底，软件开发的核心是“人”。为了迎合机器而过度牺牲可读性，是本末倒置的做法。优秀的编程活动，首先关注的是人的理解、合作与效率，其次才是计算资源的优化。在这个过程中，思考始终比机械的敲代码更重要。&lt;/p>
+&lt;h2 id="笔记">笔记&lt;/h2>
+&lt;p>好的开发实践源于深刻的理解、缜密的规划与对人性的洞察。要想构建高质量的系统，仅仅掌握技术是不够的，还需要理解需求背后的心理动因、平衡理性与感性，以及不断优化每一层的决策。&lt;/p>
+&lt;h3 id="奠定基础">奠定基础&lt;/h3>
+&lt;h4 id="通过隐喻更春分地理解软件开发需求">通过隐喻更春分地理解软件开发（需求）&lt;/h4>
+&lt;blockquote>
+&lt;p>稳定的需求是软件开发的圣杯&lt;/p>&lt;/blockquote>
+&lt;p>需求是人提出的，需求只是浮在水面上的一块浮冰，它沉在底下的部分是更大的一块东西，它其实是人的欲望以及内心的心理动力（注意：并不是所有的需求都能够挖掘到欲望的层面，大部分需求只是个人经历和习惯的偏好）&lt;/p>
+&lt;p>&lt;strong>人作为开发者应该有一种能够看透人内心和欲望的穿透性的直觉，透过现象看本质&lt;/strong>。就比如还在马车的时代，人们总想要更快的马，但实际上更快的马的这个需求，潜在的欲望是“想要更快的速度”，所以汽车就是这样在民间普及的。有可能表面提出的需求并不一定真要按照表面的需求去做。&lt;/p>
+&lt;p>「一个人的欲望和内心的心理动力」=&amp;gt;「可能提出什么样的需求」=&amp;gt; 「应该做什么样的设计去迎合什么样的受众」=&amp;gt;「数据库应该如何设计」=&amp;gt;「后端如何设计」=&amp;gt;「前端如何设计」&lt;/p>
+&lt;p>不同人的需求之间可能冲突，欲望会冲突，如何调节不同人需求间的冲突也是一个需要学习的课题&lt;/p>
+&lt;p>即使大部分公司的业务都是 PM、项目经理来分析客户需求，但是开发者也需要分析他们的需求来更好的完成任务，因为信息的传递存在损失，他们的表达也并不一定准确&lt;/p>
+&lt;p>产品离不开心理学&lt;/p>
+&lt;h4 id="谋定而后动前期准备">谋定而后动：前期准备&lt;/h4>
+&lt;p>谋定而后动，三思而后行。第一次就把事情做好是非常合算的，非必要的改动会让你付出昂贵的代价（大的项目更适合，只要大就需要规划）&lt;/p>
+&lt;p>其对立面就是「小步迭代，积极反馈」，用新鲜的刺激提升、维持做下去的动力（小型项目更适合）&lt;/p>
+&lt;p>什么事情都过度的设计、规定好并不正确，那只会按部就班地完成，随着时间的流逝，效率以及动力会大幅度下跌。&lt;/p>
+&lt;p>二者需要做出平衡。&lt;/p>
+&lt;h3 id="高质量的代码">高质量的代码&lt;/h3>
+&lt;h4 id="软件架构的设计">软件架构的设计&lt;/h4>
+&lt;p>信息隐藏：类的接口应该尽可能少地透露其内部运作原理&lt;/p>
+&lt;p>在写程序的过程中，往往能够学到很多东西，积累很多经验，以至于在第二次写的时候能够写的更好（重构的必要性，此时已经明确了大量信息）。艺术创作（如画画）稍有不同，其继承是存在随机性的，而且很多时候因为损失的厌恶让你更容易关注到差的情况&lt;/p>
+&lt;p>分而治之：没有人的大脑容量能够容纳一个复杂程序的全部细节&lt;/p>
+&lt;p>自上而下与自下而上的设计方法：&lt;/p>
+&lt;ul>
+&lt;li>自上而下：由抽象到具体，但可能无从下手&lt;/li>
+&lt;li>自下而上：从具体入手，但可能导致后面的修改成本过大&lt;/li>
+&lt;li>需要头脑风暴可能有哪些需求，进行预判&lt;/li>
+&lt;/ul>
+&lt;h4 id="设计模式">设计模式&lt;/h4>
+&lt;p>对单例保持怀疑：单例可能表明设计中混淆了类和对象，考虑是否能够直接创建对象而不是新类&lt;/p>
+&lt;p>当具有重复属性的时候可以考虑组合而不是继承&lt;/p>
+&lt;p>尽量减少一个类与其他类的协作程度&lt;/p>
+&lt;p>倾向于读代码方便而不是写代码方便，因为读代码的频率远高于写代码，牺牲读代码的便利换取写代码的便利不可取&lt;/p>
+&lt;h4 id="内聚性">内聚性&lt;/h4>
+&lt;p>需求本身决定代码长度，可能需求本身的错误导致了代码长度过长，代码长度是需求的表象&lt;/p>
+&lt;h3 id="代码改进-1">代码改进&lt;/h3>
+&lt;p>软件工程实际上就是 拿性能来换 高级&amp;amp;结构化语言 以及 整洁的代码（平衡的艺术）&lt;/p>
+&lt;h4 id="软件质量">软件质量&lt;/h4>
+&lt;p>缩短开发周期最显著的方式就是改进产品质量：调试和修改无法运行的代码占用了大部分时间，所以只要避免引入错误，就可以减少调试时间，从而提高生产力&lt;/p>
+&lt;h4 id="重构">重构&lt;/h4>
+&lt;p>当代码太乱、太庞大以至于无法重构时，可以创建一个新的接口来对接这部分代码，就像适配器模式一样（把它看作黑盒，不用关注细节）&lt;/p>
+&lt;h4 id="代码调优策略">代码调优策略&lt;/h4>
+&lt;p>帕累托法则（28 法则、少数法则）：一个程序 20% 的子程序消耗了 80% 的执行时间&lt;/p></description></item><item><title>2.信息的表示和处理</title><link>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</link><pubDate>Fri, 21 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</guid><description>&lt;h2 id="2信息的表示和处理">2.信息的表示和处理&lt;/h2>
 &lt;h3 id="信息的存储">信息的存储&lt;/h3>
 &lt;p>通常情况下，程序将内存视为一个非常大的数组，数组的元素由一个个字节组成，每个字节都有唯一的数字表示，称为 Address(地址)，所有地址的集合就称为 Virtual Address Space(虚拟地址空间)&lt;/p>
 &lt;p>&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221101744.png" alt="">
