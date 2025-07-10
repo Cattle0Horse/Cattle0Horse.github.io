@@ -1,4 +1,66 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CattleHorse's Blog</title><link>https://cattle0horse.github.io/</link><description>Recent content on CattleHorse's Blog</description><generator>Hugo</generator><language>cn</language><lastBuildDate>Sat, 05 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>了凡四训</title><link>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CattleHorse's Blog</title><link>https://cattle0horse.github.io/</link><description>Recent content on CattleHorse's Blog</description><generator>Hugo</generator><language>cn</language><lastBuildDate>Thu, 10 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>限流初识</title><link>https://cattle0horse.github.io/posts/rate-limiter/</link><pubDate>Thu, 10 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/rate-limiter/</guid><description>&lt;h2 id="为什么需要限流">为什么需要限流&lt;/h2>
+&lt;h3 id="避免连锁崩溃">避免连锁崩溃&lt;/h3>
+&lt;p>一个服务即便进行过压测，但当真实运行到线上时，其收到的请求流量以及能够负载的流量是不固定的，如果服务自身没有一个自我保护机制，当流量超过预计的负载后，会将这部分负载传递给该服务的下游，造成连锁反应甚至雪崩。&lt;/p>
+&lt;h3 id="提供可靠的响应时间">提供可靠的响应时间&lt;/h3>
+&lt;p>服务调用方一般都设有超时时间，如果一个服务由于拥塞，导致响应时间都处于超时状态，那么即便服务最终正确提供了响应，对于 Client 来说也完全没有意义。&lt;/p>
+&lt;p>一个服务对于调用方提供的承诺既包含了响应的结果，也包含了响应的时间。限流能够让服务自身通过主动丢弃负载能力外的流量，以达到在额定负载能力下，依然能够维持有效的响应效率。&lt;/p>
+&lt;h2 id="限流方案">限流方案&lt;/h2>
+&lt;h3 id="固定窗口计数器fixed-window-counter">固定窗口计数器（Fixed Window Counter）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>原理&lt;/strong>：在固定的时间窗口内，允许一定数量的请求通过。每当时间窗口结束时，计数器会重置。超出最大请求数的请求将被拒绝。&lt;/li>
+&lt;li>&lt;strong>特点&lt;/strong>：&lt;/li>
+&lt;li>容易受到时间窗口边界问题的影响（即在窗口切换时，可能会允许过多的请求通过）&lt;/li>
+&lt;li>&lt;strong>适用场景&lt;/strong>：适用于流量相对平稳的场景，通常在请求量较低的应用中使用。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518142232339.png" alt="">&lt;/p>
+&lt;p>具体来说，当大量请求在一个窗口的特别早或特别晚时，就会出现“突刺”现象。太早则窗口剩余时间无法处理；太晚则可能和下一个窗口的大量请求堆积，导致超出阈值。&lt;/p>
+&lt;p>例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p>
+&lt;p>&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518142042844.png" alt="">&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:2;-o-tab-size:2;tab-size:2;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">type&lt;/span> &lt;span style="color:#000">FixedWindowCounter&lt;/span> &lt;span style="color:#204a87;font-weight:bold">struct&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">mu&lt;/span> &lt;span style="color:#000">sync&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Mutex&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">requestCount&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">limit&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">window&lt;/span> &lt;span style="color:#000">time&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Duration&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">resetTime&lt;/span> &lt;span style="color:#000">time&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Time&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000">NewFixedWindowCounter&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">limit&lt;/span> &lt;span style="color:#204a87;font-weight:bold">int&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span> &lt;span style="color:#000">window&lt;/span> &lt;span style="color:#000">time&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Duration&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">FixedWindowCounter&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;amp;&lt;/span>&lt;span style="color:#000">FixedWindowCounter&lt;/span>&lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">limit&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">limit&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">window&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">window&lt;/span>&lt;span style="color:#000;font-weight:bold">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">resetTime&lt;/span>&lt;span style="color:#000;font-weight:bold">:&lt;/span> &lt;span style="color:#000">time&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Now&lt;/span>&lt;span style="color:#000;font-weight:bold">(),&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#204a87;font-weight:bold">func&lt;/span> &lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">fw&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">*&lt;/span>&lt;span style="color:#000">FixedWindowCounter&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#000">Allow&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span> &lt;span style="color:#204a87;font-weight:bold">bool&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">mu&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Lock&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">defer&lt;/span> &lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">mu&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Unlock&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">now&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">:=&lt;/span> &lt;span style="color:#000">time&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Now&lt;/span>&lt;span style="color:#000;font-weight:bold">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#8f5902;font-style:italic">// 如果距离上次重置时间大于窗口值，则重置计数器&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">now&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">Sub&lt;/span>&lt;span style="color:#000;font-weight:bold">(&lt;/span>&lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">resetTime&lt;/span>&lt;span style="color:#000;font-weight:bold">)&lt;/span> &lt;span style="color:#ce5c00;font-weight:bold">&amp;gt;=&lt;/span> &lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">window&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">requestCount&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#0000cf;font-weight:bold">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">resetTime&lt;/span> &lt;span style="color:#000;font-weight:bold">=&lt;/span> &lt;span style="color:#000">now&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">if&lt;/span> &lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">requestCount&lt;/span> &lt;span style="color:#000;font-weight:bold">&amp;lt;&lt;/span> &lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">limit&lt;/span> &lt;span style="color:#000;font-weight:bold">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000">fw&lt;/span>&lt;span style="color:#000;font-weight:bold">.&lt;/span>&lt;span style="color:#000">requestCount&lt;/span>&lt;span style="color:#ce5c00;font-weight:bold">++&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#204a87;font-weight:bold">return&lt;/span> &lt;span style="color:#204a87;font-weight:bold">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#000;font-weight:bold">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="滑动窗口日志sliding-window-log">滑动窗口日志（Sliding Window Log）&lt;/h3>
+&lt;ul>
+&lt;li>&lt;strong>原理&lt;/strong>：每次请求都会在时间轴上记录，滑动窗口会随着时间的推移进行更新。&lt;/li>
+&lt;li>&lt;strong>特点&lt;/strong>：
+&lt;ul>
+&lt;li>能够更加平滑地控制请求速率，避免固定窗口切换时的突发流量&lt;/li>
+&lt;li>其消耗的内存过多，因为即使一个请求已被拒绝，它的时间戳依然被保存在内存中。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;strong>适用场景&lt;/strong>：适用于需要精确限流的场景，减少边界效应。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518170443499.png" alt="">&lt;/p></description></item><item><title>了凡四训</title><link>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;ul>
 &lt;li>本文仅为&lt;a href="https://www.bilibili.com/video/BV1QaKnzCEUj">该视频&lt;/a>的文案，并不完全代表个人想法&lt;/li>
 &lt;li>兼听则明偏信则暗&lt;/li>
