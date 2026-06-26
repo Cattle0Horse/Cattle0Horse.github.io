@@ -6,8 +6,6 @@ draft: false
 tags: ["Agent"]
 ---
 
-# Agent 真正需要的不是更长 prompt，而是一个可运行的环境
-
 很多 Agent 系统的问题，表面上看是模型不够稳定，实际上是我们一开始就把问题放错了位置
 
 Agent 出错以后，我们很容易先去改 prompt
