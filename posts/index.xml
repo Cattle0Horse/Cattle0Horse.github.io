@@ -1,4 +1,31 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on CattleHorse's Blog</title><link>https://cattle0horse.github.io/posts/</link><description>Recent content in Posts on CattleHorse's Blog</description><generator>Hugo</generator><language>cn</language><lastBuildDate>Thu, 10 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>限流初识</title><link>https://cattle0horse.github.io/posts/rate-limiter/</link><pubDate>Thu, 10 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/rate-limiter/</guid><description>&lt;h2 id="为什么需要限流">为什么需要限流&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on CattleHorse's Blog</title><link>https://cattle0horse.github.io/posts/</link><description>Recent content in Posts on CattleHorse's Blog</description><generator>Hugo</generator><language>cn</language><lastBuildDate>Sat, 10 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Agent 真正需要的不是更长 prompt，而是一个可运行的环境</title><link>https://cattle0horse.github.io/posts/agent-runtime-environment/</link><pubDate>Sat, 10 Jan 2026 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/agent-runtime-environment/</guid><description>&lt;h1 id="agent-真正需要的不是更长-prompt而是一个可运行的环境">Agent 真正需要的不是更长 prompt，而是一个可运行的环境&lt;/h1>
+&lt;p>很多 Agent 系统的问题，表面上看是模型不够稳定，实际上是我们一开始就把问题放错了位置&lt;/p>
+&lt;p>Agent 出错以后，我们很容易先去改 prompt&lt;/p>
+&lt;p>它没有遵守规则，就把规则写得更细。它没有理解背景，就塞更多上下文。它不会操作，就继续接工具。它执行流程混乱，就再加一层编排&lt;/p>
+&lt;p>这些改动看起来都合理，而且短期内通常也会有一点效果。但真正用久了会发现，很多问题并没有被解决，只是换了一种方式重新出现&lt;/p>
+&lt;p>规则写进去了，长任务后半段还是会失效。工具接上去了，Agent 还是不知道什么时候该用。计划拆好了，执行过程中还是会跳步、合并步骤，最后给出一个“看起来完成”的结果。上下文补得越来越多，系统反而越来越重，越来越难判断问题到底出在哪里&lt;/p>
+&lt;p>其实，问题不一定是模型没听懂，也不一定是信息给得不够，而是我们一直在用“对话模型”的方式设计 Agent&lt;/p>
+&lt;p>但 Agent 和普通 LLM 最大的区别，不是它更会推理，而是它会行动&lt;/p>
+&lt;p>它会读文件、写文件、调用工具、修改状态、触发流程。只要它开始行动，它就不再只是生成一段文本，而是在改变一个外部环境&lt;/p>
+&lt;p>所以 Agent 工程真正要回答的问题，不只是怎么让模型给出更好的回答，而是怎么给这个会行动的模型，设计一个可运行、可观察、可约束、可恢复的环境&lt;/p>
+&lt;blockquote>
+&lt;p>“模型包含智能，而 Harness 是让智能变得有用的系统”&lt;/p>&lt;/blockquote>
+&lt;h2 id="错觉问题出在-prompt-和-context">错觉：问题出在 prompt 和 context&lt;/h2>
+&lt;p>当 Agent 表现不稳定时，最自然的做法就是补 prompt&lt;/p>
+&lt;p>它漏掉某条规则，就把规则写进 system prompt。它不知道项目背景，就塞更多文档。它忘了之前的决策，就把历史记录再总结一遍。它工具用错了，就在提示词里加一段“工具使用注意事项”&lt;/p>
+&lt;p>这些做法当然有用。Prompt 和 context 是 Agent 工作的基础。Prompt 让模型理解目标，context 让模型获得信息。没有清晰指令和足够上下文，Agent 只能在信息真空里猜&lt;/p>
+&lt;p>但问题在于，它们主要作用在模型的一次推理输入上&lt;/p>
+&lt;p>也就是说，它们解决的是：模型这一次该听到什么、该知道什么、该倾向于怎么行动&lt;/p>
+&lt;p>它们不直接解决另一类问题：工具调用前是否需要权限判断，文件被修改后有没有记录，外部副作用是否可追踪，任务中断后能不能恢复，Agent 声称完成后是不是真的完成，人接手时能不能复盘整个过程&lt;/p>
+&lt;p>这些问题不是“说清楚一点”就能解决的&lt;/p>
+&lt;blockquote>
+&lt;p>“prompt 约束是说服，不是强制。模型「理解」了规则不等于「遵守」了规则——你无法用更多的字来对抗概率性的遗忘”&lt;/p>&lt;/blockquote>
+&lt;p>因为当 Agent 从回答问题变成执行任务以后，真正失控的地方经常发生在模型行动之后。它不是没听懂，而是听懂以后做了一件系统没有承接好的事&lt;/p>
+&lt;p>这也是为什么很多时候继续加 prompt 会让系统变得更重，而不是更稳&lt;/p>
+&lt;p>更长的 prompt 可能让模型更容易遵守规则，也可能让重点被稀释。更多的 context 可能给模型更多信息，也可能让它在无关材料里迷路。规则写得越细，越容易变成一份只在开头出现、在长任务后半段被注意力衰减冲掉的说明书&lt;/p>
+&lt;p>所以，Agent 不是缺一句更完美的提示词，而是缺一个能承载行动后果的环境&lt;/p>
+&lt;h2 id="agent-的关键变化从输出文本到改变状态">Agent 的关键变化：从输出文本到改变状态&lt;/h2>
+&lt;p>普通 LLM 的输出主要是文本&lt;/p></description></item><item><title>限流初识</title><link>https://cattle0horse.github.io/posts/rate-limiter/</link><pubDate>Thu, 10 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/rate-limiter/</guid><description>&lt;h2 id="为什么需要限流">为什么需要限流&lt;/h2>
 &lt;h3 id="避免连锁崩溃">避免连锁崩溃&lt;/h3>
 &lt;p>一个服务即便进行过压测，但当真实运行到线上时，其收到的请求流量以及能够负载的流量是不固定的，如果服务自身没有一个自我保护机制，当流量超过预计的负载后，会将这部分负载传递给该服务的下游，造成连锁反应甚至雪崩。&lt;/p>
 &lt;h3 id="提供可靠的响应时间">提供可靠的响应时间&lt;/h3>
