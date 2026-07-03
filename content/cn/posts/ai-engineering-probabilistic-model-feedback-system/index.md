@@ -6,11 +6,8 @@ categories: ["Tech"]
 draft: false
 tags:
 - 人工智能
-- LLM 能力边界
-- 可验证奖励
 - 上下文工程
 - Harness
-- AI 经济学
 - 循环工程
 - 数据飞轮
 - 幻觉
