@@ -1,5 +1,5 @@
 baseURL = "https://cattle0horse.github.io"
-languageCode = "en-us"
+locale = "en-us"
 title = "CattleHorse's Blog" # for rss
 theme = "yinyang"
 DefaultContentLanguage = "cn"
@@ -7,7 +7,7 @@ DefaultContentLanguage = "cn"
 [languages]
   [languages.cn]
     contentDir = "content/cn"
-    languageName = "Chinese"
+    label = "Chinese"
     weight = 2
 #   [languages.en]
 #     contentDir = "content/en"
@@ -36,6 +36,8 @@ DefaultContentLanguage = "cn"
 [params]
   # disqus = "help"   # disqus account name
   # extraHead = ''
+  author = "CattleHorse"
+  authorHomepage = "https://github.com/cattle0horse"
   headTitle = "CattleHorse's Blog"
   description = "By accumulating small steps, one can reach a thousand miles."
   mainSections = ["posts"]
@@ -44,6 +46,14 @@ DefaultContentLanguage = "cn"
   # extraCSSFiles = ["css/foo.css", "css/bar.css"]
   extraCSSFiles = ["css/background.css"]
   math = false # 让frontmatter中的math=true时才生效
+
+# availableLanguages用于语言切换
+[[params.availableLanguages]]
+  code = "cn"
+  name = "Chinese"
+#   [[params.availableLanguages]]
+#     code = "en"
+#     name = "English"
 
 # footer(通过CSS修改至header下方)
 [[params.socials]]
