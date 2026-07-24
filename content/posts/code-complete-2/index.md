@@ -4,7 +4,6 @@ date: "2025-05-24"
 categories: ["Tech"]
 draft: false
 tags: ["Book"]
-math: true
 ---
 
 ## AI 渐进式叙述
