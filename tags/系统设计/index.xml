@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>系统设计 on CattleHorse's Blog</title><link>https://cattle0horse.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</link><description>Recent content in 系统设计 on CattleHorse's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 10 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.xml" rel="self" type="application/rss+xml"/><item><title>限流初识</title><link>https://cattle0horse.github.io/posts/rate-limiter/</link><pubDate>Thu, 10 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/rate-limiter/</guid><description>&lt;h2 id="为什么需要限流"&gt;为什么需要限流&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>系统设计 on CattleHorse's Blog</title><link>https://cattle0horse.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/</link><description>Recent content in 系统设计 on CattleHorse's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 10 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/tags/%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/index.xml" rel="self" type="application/rss+xml"/><item><title>限流初识</title><link>https://cattle0horse.github.io/posts/rate-limiter/</link><pubDate>Thu, 10 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/rate-limiter/</guid><description>&lt;h2 id="为什么需要限流"&gt;为什么需要限流&lt;/h2&gt;
 &lt;h3 id="避免连锁崩溃"&gt;避免连锁崩溃&lt;/h3&gt;
 &lt;p&gt;一个服务即便进行过压测，但当真实运行到线上时，其收到的请求流量以及能够负载的流量是不固定的，如果服务自身没有一个自我保护机制，当流量超过预计的负载后，会将这部分负载传递给该服务的下游，造成连锁反应甚至雪崩。&lt;/p&gt;
 &lt;h3 id="提供可靠的响应时间"&gt;提供可靠的响应时间&lt;/h3&gt;
@@ -12,10 +12,10 @@
 &lt;li&gt;容易受到时间窗口边界问题的影响（即在窗口切换时，可能会允许过多的请求通过）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于流量相对平稳的场景，通常在请求量较低的应用中使用。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518142232339.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518142232339.png" alt=""&gt;&lt;/p&gt;
 &lt;p&gt;具体来说，当大量请求在一个窗口的特别早或特别晚时，就会出现“突刺”现象。太早则窗口剩余时间无法处理；太晚则可能和下一个窗口的大量请求堆积，导致超出阈值。&lt;/p&gt;
 &lt;p&gt;例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518142042844.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518142042844.png" alt=""&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;type&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;FixedWindowCounter&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;struct&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;mu&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;sync&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Mutex&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;requestCount&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;int&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
@@ -60,4 +60,4 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于需要精确限流的场景，减少边界效应。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518170443499.png" alt=""&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518170443499.png" alt=""&gt;&lt;/p&gt;</description></item></channel></rss>

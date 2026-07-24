@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on CattleHorse's Blog</title><link>https://cattle0horse.github.io/posts/</link><description>Recent content in Posts on CattleHorse's Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 02 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>AI 工程化的主线：把概率模型放进反馈系统</title><link>https://cattle0horse.github.io/posts/ai-engineering-probabilistic-model-feedback-system/</link><pubDate>Thu, 02 Jul 2026 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/ai-engineering-probabilistic-model-feedback-system/</guid><description>单模型能力不是终点——LLM 的概率性决定了它必须被上下文、验证循环、奖励信号和组织反馈层层约束，才能从 demo 变成可靠生产力。本文按推理系统层、训练学习层、组织反馈层三层框架，串联代码突破、上下文工程、循环验证、RL 奖励和数据飞轮的关键概念</description></item><item><title>Agent 真正需要的不是更长 prompt，而是一个可运行的环境</title><link>https://cattle0horse.github.io/posts/agent-runtime-environment/</link><pubDate>Sat, 10 Jan 2026 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/agent-runtime-environment/</guid><description>&lt;p&gt;很多 Agent 系统的问题，表面上看是模型不够稳定，实际上是我们一开始就把问题放错了位置&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on CattleHorse's Blog</title><link>https://cattle0horse.github.io/posts/</link><description>Recent content in Posts on CattleHorse's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 02 Jul 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>AI 工程化的主线：把概率模型放进反馈系统</title><link>https://cattle0horse.github.io/posts/ai-engineering-probabilistic-model-feedback-system/</link><pubDate>Thu, 02 Jul 2026 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/ai-engineering-probabilistic-model-feedback-system/</guid><description>单模型能力不是终点——LLM 的概率性决定了它必须被上下文、验证循环、奖励信号和组织反馈层层约束，才能从 demo 变成可靠生产力。本文按推理系统层、训练学习层、组织反馈层三层框架，串联代码突破、上下文工程、循环验证、RL 奖励和数据飞轮的关键概念</description></item><item><title>Agent 真正需要的不是更长 prompt，而是一个可运行的环境</title><link>https://cattle0horse.github.io/posts/agent-runtime-environment/</link><pubDate>Sat, 10 Jan 2026 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/agent-runtime-environment/</guid><description>&lt;p&gt;很多 Agent 系统的问题，表面上看是模型不够稳定，实际上是我们一开始就把问题放错了位置&lt;/p&gt;
 &lt;p&gt;Agent 出错以后，我们很容易先去改 prompt&lt;/p&gt;
 &lt;p&gt;它没有遵守规则，就把规则写得更细。它没有理解背景，就塞更多上下文。它不会操作，就继续接工具。它执行流程混乱，就再加一层编排&lt;/p&gt;
 &lt;p&gt;这些改动看起来都合理，而且短期内通常也会有一点效果。但真正用久了会发现，很多问题并没有被解决，只是换了一种方式重新出现&lt;/p&gt;
@@ -41,10 +41,10 @@
 &lt;li&gt;容易受到时间窗口边界问题的影响（即在窗口切换时，可能会允许过多的请求通过）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于流量相对平稳的场景，通常在请求量较低的应用中使用。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518142232339.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518142232339.png" alt=""&gt;&lt;/p&gt;
 &lt;p&gt;具体来说，当大量请求在一个窗口的特别早或特别晚时，就会出现“突刺”现象。太早则窗口剩余时间无法处理；太晚则可能和下一个窗口的大量请求堆积，导致超出阈值。&lt;/p&gt;
 &lt;p&gt;例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518142042844.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518142042844.png" alt=""&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;type&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;FixedWindowCounter&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;struct&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;mu&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;sync&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Mutex&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;requestCount&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;int&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
@@ -89,7 +89,7 @@
 &lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于需要精确限流的场景，减少边界效应。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/rate-limiter/attachments/%E9%99%90%E6%B5%81-20250518170443499.png" alt=""&gt;&lt;/p&gt;</description></item><item><title>了凡四训</title><link>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518170443499.png" alt=""&gt;&lt;/p&gt;</description></item><item><title>了凡四训</title><link>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;本文仅为&lt;a href="https://www.bilibili.com/video/BV1QaKnzCEUj"&gt;该视频&lt;/a&gt;的文案，并不完全代表个人想法&lt;/li&gt;
 &lt;li&gt;兼听则明偏信则暗&lt;/li&gt;
@@ -221,8 +221,8 @@
 &lt;p&gt;帕累托法则（28 法则、少数法则）：一个程序 20% 的子程序消耗了 80% 的执行时间&lt;/p&gt;</description></item><item><title>2.信息的表示和处理</title><link>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</link><pubDate>Fri, 21 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</guid><description>&lt;h2 id="2信息的表示和处理"&gt;2.信息的表示和处理&lt;/h2&gt;
 &lt;h3 id="信息的存储"&gt;信息的存储&lt;/h3&gt;
 &lt;p&gt;通常情况下，程序将内存视为一个非常大的数组，数组的元素由一个个字节组成，每个字节都有唯一的数字表示，称为 Address(地址)，所有地址的集合就称为 Virtual Address Space(虚拟地址空间)&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221101744.png" alt=""&gt;
-&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221439235.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221101744.png" alt=""&gt;
+&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221439235.png" alt=""&gt;&lt;/p&gt;
 &lt;p&gt;word size(字长): 决定了虚拟地址空间的大小，字长为 w 位的机器的虚拟地址空间 (程序使用连续的虚拟地址访问内存/磁盘) 的范围是 $0 \sim 2^{w} - 1$ （因为每一个 bit 位有 0 和 1 两种取值）&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;32 位系统（如 x86）的虚拟地址空间最大为 4GB ( $2^{32}$ Byte)&lt;/li&gt;
@@ -236,9 +236,9 @@
 &lt;p&gt;大多数 64 位机器向后兼容，可以运行 32 位程序&lt;/p&gt;
 &lt;p&gt;32 位程序与 64 位程序的区别是编译过程，而不是运行机器的类型&lt;/p&gt;
 &lt;p&gt;在编译时可以通过编译选项指定生成 32 位的程序还是 64 位的程序
-&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222358537.png" alt=""&gt;&lt;/p&gt;
+&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222358537.png" alt=""&gt;&lt;/p&gt;
 &lt;p&gt;不同的数据类型可能占用不同的大小，同时对于不同位数的机器也有区别，很多数据类型都是占用了多个字节空间
-&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222809671.png" alt=""&gt;&lt;/p&gt;
+&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222809671.png" alt=""&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;对于需要存储的数据，我们需要知道「该数据的地址是什么」以及「数据在内存中是如何排布的」&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -271,7 +271,7 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250321155438902.png" alt=""&gt;&lt;/p&gt;</description></item><item><title>1.计算机系统漫步</title><link>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</link><pubDate>Wed, 19 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</guid><description>&lt;h2 id="1计算机系统漫步"&gt;1.计算机系统漫步&lt;/h2&gt;
+&lt;p&gt;&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250321155438902.png" alt=""&gt;&lt;/p&gt;</description></item><item><title>1.计算机系统漫步</title><link>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</link><pubDate>Wed, 19 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</guid><description>&lt;h2 id="1计算机系统漫步"&gt;1.计算机系统漫步&lt;/h2&gt;
 &lt;p&gt;为什么要了解编译系统是如何工作的？&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;优化程序性能&lt;/li&gt;
@@ -279,7 +279,7 @@
 &lt;li&gt;避免安全漏洞&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="helloworld-程序的一生简述"&gt;HelloWorld 程序的一生简述&lt;/h3&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/attachments/1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%AD%A5-20250319131409323.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%AD%A5-20250319131409323.png" alt=""&gt;&lt;/p&gt;
 &lt;p&gt;一个 C 语言程序（例如 &lt;code&gt;hello.c&lt;/code&gt;）从编写到执行再到结束的整个生命周期&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;编译过程&lt;/strong&gt;：
@@ -314,7 +314,7 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id="计算机系统的硬件组成"&gt;计算机系统的硬件组成&lt;/h3&gt;
-&lt;p&gt;&lt;img src="https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/attachments/1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%AD%A5-20250319151147368.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%AD%A5-20250319151147368.png" alt=""&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;CPU(Central Process Unit, 中央处理单元, 处理器)：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Program Count(PC, 程序计数器，指令指针)&lt;/strong&gt;：大小为一个 word(字) 的存储区域，存放某一条指令的地址
