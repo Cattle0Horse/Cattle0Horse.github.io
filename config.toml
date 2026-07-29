@@ -33,6 +33,7 @@ extraHead = '''
     pre, code { font-family: "Fira Code", "SF Mono", Menlo, monospace; }
   </style>
 '''
+editPageRepo = "https://github.com/Cattle0Horse/Cattle0Horse.github.io"
 
 [params.author]
 homepage = "https://github.com/cattle0horse"
