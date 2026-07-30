@@ -41,10 +41,14 @@
 &lt;li&gt;容易受到时间窗口边界问题的影响（即在窗口切换时，可能会允许过多的请求通过）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于流量相对平稳的场景，通常在请求量较低的应用中使用。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518142232339.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/%e9%99%90%e6%b5%81-20250518142232339.png"
+ alt="" width="1080" height="571" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;具体来说，当大量请求在一个窗口的特别早或特别晚时，就会出现“突刺”现象。太早则窗口剩余时间无法处理；太晚则可能和下一个窗口的大量请求堆积，导致超出阈值。&lt;/p&gt;
 &lt;p&gt;例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p&gt;
-&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518142042844.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/%e9%99%90%e6%b5%81-20250518142042844.png"
+ alt="" width="1045" height="453" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;type&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;FixedWindowCounter&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;struct&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;mu&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;sync&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Mutex&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;requestCount&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;int&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
@@ -81,15 +85,14 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="滑动窗口日志sliding-window-log"&gt;滑动窗口日志（Sliding Window Log）&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;原理&lt;/strong&gt;：每次请求都会在时间轴上记录，滑动窗口会随着时间的推移进行更新。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：
-&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：&lt;/li&gt;
 &lt;li&gt;能够更加平滑地控制请求速率，避免固定窗口切换时的突发流量&lt;/li&gt;
 &lt;li&gt;其消耗的内存过多，因为即使一个请求已被拒绝，它的时间戳依然被保存在内存中。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于需要精确限流的场景，减少边界效应。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518170443499.png" alt=""&gt;&lt;/p&gt;</description></item><item><title>了凡四训</title><link>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;p&gt;&lt;img src="attachments/%e9%99%90%e6%b5%81-20250518170443499.png"
+ alt="" width="1080" height="840" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;</description></item><item><title>了凡四训</title><link>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;本文仅为&lt;a href="https://www.bilibili.com/video/BV1QaKnzCEUj"&gt;该视频&lt;/a&gt;的文案，并不完全代表个人想法&lt;/li&gt;
 &lt;li&gt;兼听则明偏信则暗&lt;/li&gt;
@@ -114,7 +117,9 @@
 &lt;p&gt;如何提升气场？男人世界的圣经《教父》有言：“伟大的人并不是生来就伟大，而是在成长过程中一步步变得不平凡。”提升气场是让我们变得不平凡的起点。接下来让我们由内而外完成蜕变。&lt;/p&gt;
 &lt;h5 id="外在气场"&gt;外在气场&lt;/h5&gt;
 &lt;p&gt;第一，&lt;strong&gt;面部表情&lt;/strong&gt;。发哥露出霸气侧漏的一面时，你会发现他最引人注目的是眼神和微笑。人在不自信、紧张的时候，会不自觉地眨眼，且次数很频繁，眼神不定。而发哥正好相反，当他注视别人的时候，眼神始终聚焦对方，保持微笑。被看的人好像受到了极度的关注。从心理学上来说，当人的大脑感觉被关注，就会对你造成心理压制，也会主动将对方列为警惕对象，一定程度上放大你的紧张情绪。生活中最简单的做法就是与人交流时，&lt;strong&gt;眼神不要刻意回避，要坚定且有神，但不宜超过五秒&lt;/strong&gt;，否则攻击性太强，容易被打。时间长了，你会发现越来越多的人愿意与你交流，你的眼神无形中给你带来很多的便利。这就是面部表情产生的气场力量，它能通过视觉效果影响别人对你的判断。如果你试了很多次，发现没有办法坚定自己的眼神，也无法控制自己的表情，那可能是不够自信。不用怕，多读书，知识储备足够，到哪里都有自信。&lt;/p&gt;
-&lt;p&gt;&lt;img src="attachments/BV1QaKnzCEUj-%E7%88%86%E8%82%9D153%E5%A4%A9%EF%BC%8C%E4%B8%80%E5%8F%A3%E6%B0%941%E5%B0%8F%E6%97%B651%E5%88%86%E7%9C%8B%E6%87%82%E3%80%8A%E4%BA%86%E5%87%A1%E5%9B%9B%E8%AE%AD%E3%80%8B-20250705133224497.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/BV1QaKnzCEUj-%e7%88%86%e8%82%9d153%e5%a4%a9%ef%bc%8c%e4%b8%80%e5%8f%a3%e6%b0%941%e5%b0%8f%e6%97%b651%e5%88%86%e7%9c%8b%e6%87%82%e3%80%8a%e4%ba%86%e5%87%a1%e5%9b%9b%e8%ae%ad%e3%80%8b-20250705133224497.png"
+ alt="" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;第二，&lt;strong&gt;人体打开度&lt;/strong&gt;。这一组照片非常明显，即使你不知道他们的身份，也会在见面时瞬间明晰他们的性格地位。因为恐惧会激发生存的本能，双手护在身前，且做蜷伏状。而身体打开可以表达恐惧度降低，也就是你的气场。这是第二组照片，我们明显能够感知组图的慌乱，而内心慌乱的一大特征就是身体失去稳定性，且会出现小动作。注意第二张图的手部，呈现出一种无法违抗的气场。这里不得不再次提到手部的重要作用。如图是人体手势的三大能量区：低能区是腰部以下的区域，如果守在这个位置，整个人会呈现出极度的不自信；超能区是肩部以上的位置，这是表达亢奋的一种方式，但很容易呈现出攻击性气场；腰部到肩部的区域是最推荐给大家的手势范围，强气场却不会有过激的攻击性。&lt;/p&gt;
 &lt;p&gt;第三，&lt;strong&gt;对话&lt;/strong&gt;。人们很多时候都没有意识到，谈话的关键并不在于说，而是不说。一个有威势的成年人，往往是惜字如金的。首先，顿挫。喋喋不休是气场最忌讳的词，因为它意味着你对自己所讲的话不自信。语言的力量感来自少而精、慢。而《教父》中柯梁在面对议员的羞辱和威胁时，整个过程不发一言，但当议员即将离开的时候，给了唯一一句回复：“我的出价是……一分没有。”中间常常停顿，给了这句台词以极大的力量感。其次，沉默。沉默表达拒绝是黑手党最常用的谈判技巧，因为他们知道沉默是一种压力，心理强度低的人会首先给出报价。这是年轻的老教父谈判房租的情景，每次对方开价，他只是笑笑不说话，直到对方给出他满意的价格。退一步讲，如果你做不到用沉默压制对方，那就不要做那个先开口的人。最后，眼神。记住，当我们看他的时候，脸转向他，而我们的眼睛必须是聚焦的。时间不能过短，这意味着我们心虚了；亦不能过长，因为这会带来极大的攻击性。&lt;/p&gt;
 &lt;h5 id="内在气场"&gt;内在气场&lt;/h5&gt;
@@ -221,8 +226,12 @@
 &lt;p&gt;帕累托法则（28 法则、少数法则）：一个程序 20% 的子程序消耗了 80% 的执行时间&lt;/p&gt;</description></item><item><title>2.信息的表示和处理</title><link>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</link><pubDate>Fri, 21 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</guid><description>&lt;h2 id="2信息的表示和处理"&gt;2.信息的表示和处理&lt;/h2&gt;
 &lt;h3 id="信息的存储"&gt;信息的存储&lt;/h3&gt;
 &lt;p&gt;通常情况下，程序将内存视为一个非常大的数组，数组的元素由一个个字节组成，每个字节都有唯一的数字表示，称为 Address(地址)，所有地址的集合就称为 Virtual Address Space(虚拟地址空间)&lt;/p&gt;
-&lt;p&gt;&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221101744.png" alt=""&gt;
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221439235.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221101744.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221439235.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;word size(字长): 决定了虚拟地址空间的大小，字长为 w 位的机器的虚拟地址空间 (程序使用连续的虚拟地址访问内存/磁盘) 的范围是 $0 \sim 2^{w} - 1$ （因为每一个 bit 位有 0 和 1 两种取值）&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;32 位系统（如 x86）的虚拟地址空间最大为 4GB ( $2^{32}$ Byte)&lt;/li&gt;
@@ -236,9 +245,13 @@
 &lt;p&gt;大多数 64 位机器向后兼容，可以运行 32 位程序&lt;/p&gt;
 &lt;p&gt;32 位程序与 64 位程序的区别是编译过程，而不是运行机器的类型&lt;/p&gt;
 &lt;p&gt;在编译时可以通过编译选项指定生成 32 位的程序还是 64 位的程序
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222358537.png" alt=""&gt;&lt;/p&gt;
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319222358537.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;不同的数据类型可能占用不同的大小，同时对于不同位数的机器也有区别，很多数据类型都是占用了多个字节空间
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222809671.png" alt=""&gt;&lt;/p&gt;
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319222809671.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;对于需要存储的数据，我们需要知道「该数据的地址是什么」以及「数据在内存中是如何排布的」&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -271,7 +284,9 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250321155438902.png" alt=""&gt;&lt;/p&gt;</description></item><item><title>1.计算机系统漫步</title><link>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</link><pubDate>Wed, 19 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</guid><description>&lt;h2 id="1计算机系统漫步"&gt;1.计算机系统漫步&lt;/h2&gt;
+&lt;p&gt;&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250321155438902.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;</description></item><item><title>1.计算机系统漫步</title><link>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</link><pubDate>Wed, 19 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</guid><description>&lt;h2 id="1计算机系统漫步"&gt;1.计算机系统漫步&lt;/h2&gt;
 &lt;p&gt;为什么要了解编译系统是如何工作的？&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;优化程序性能&lt;/li&gt;
@@ -279,7 +294,9 @@
 &lt;li&gt;避免安全漏洞&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="helloworld-程序的一生简述"&gt;HelloWorld 程序的一生简述&lt;/h3&gt;
-&lt;p&gt;&lt;img src="attachments/1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%AD%A5-20250319131409323.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/1.%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e6%bc%ab%e6%ad%a5-20250319131409323.png"
+ alt="" width="1440" height="305" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;一个 C 语言程序（例如 &lt;code&gt;hello.c&lt;/code&gt;）从编写到执行再到结束的整个生命周期&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;编译过程&lt;/strong&gt;：
@@ -314,7 +331,9 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id="计算机系统的硬件组成"&gt;计算机系统的硬件组成&lt;/h3&gt;
-&lt;p&gt;&lt;img src="attachments/1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%AD%A5-20250319151147368.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/1.%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e6%bc%ab%e6%ad%a5-20250319151147368.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;CPU(Central Process Unit, 中央处理单元, 处理器)：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Program Count(PC, 程序计数器，指令指针)&lt;/strong&gt;：大小为一个 word(字) 的存储区域，存放某一条指令的地址

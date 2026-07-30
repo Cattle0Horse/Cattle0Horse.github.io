@@ -41,10 +41,14 @@
 &lt;li&gt;容易受到时间窗口边界问题的影响（即在窗口切换时，可能会允许过多的请求通过）&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于流量相对平稳的场景，通常在请求量较低的应用中使用。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518142232339.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/%e9%99%90%e6%b5%81-20250518142232339.png"
+ alt="" width="1080" height="571" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;具体来说，当大量请求在一个窗口的特别早或特别晚时，就会出现“突刺”现象。太早则窗口剩余时间无法处理；太晚则可能和下一个窗口的大量请求堆积，导致超出阈值。&lt;/p&gt;
 &lt;p&gt;例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p&gt;
-&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518142042844.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/%e9%99%90%e6%b5%81-20250518142042844.png"
+ alt="" width="1045" height="453" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;type&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;FixedWindowCounter&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;struct&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;{&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;mu&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;sync&lt;/span&gt;&lt;span style="color:#000;font-weight:bold"&gt;.&lt;/span&gt;&lt;span style="color:#000"&gt;Mutex&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#000"&gt;requestCount&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt; &lt;/span&gt;&lt;span style="color:#204a87;font-weight:bold"&gt;int&lt;/span&gt;&lt;span style="color:#f8f8f8"&gt;
@@ -81,15 +85,14 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="滑动窗口日志sliding-window-log"&gt;滑动窗口日志（Sliding Window Log）&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;原理&lt;/strong&gt;：每次请求都会在时间轴上记录，滑动窗口会随着时间的推移进行更新。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：
-&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;特点&lt;/strong&gt;：&lt;/li&gt;
 &lt;li&gt;能够更加平滑地控制请求速率，避免固定窗口切换时的突发流量&lt;/li&gt;
 &lt;li&gt;其消耗的内存过多，因为即使一个请求已被拒绝，它的时间戳依然被保存在内存中。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于需要精确限流的场景，减少边界效应。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src="attachments/%E9%99%90%E6%B5%81-20250518170443499.png" alt=""&gt;&lt;/p&gt;</description></item><item><title>代码大全2</title><link>https://cattle0horse.github.io/posts/code-complete-2/</link><pubDate>Sat, 24 May 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/code-complete-2/</guid><description>&lt;h2 id="ai-渐进式叙述"&gt;AI 渐进式叙述&lt;/h2&gt;
+&lt;p&gt;&lt;img src="attachments/%e9%99%90%e6%b5%81-20250518170443499.png"
+ alt="" width="1080" height="840" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;</description></item><item><title>代码大全2</title><link>https://cattle0horse.github.io/posts/code-complete-2/</link><pubDate>Sat, 24 May 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/code-complete-2/</guid><description>&lt;h2 id="ai-渐进式叙述"&gt;AI 渐进式叙述&lt;/h2&gt;
 &lt;p&gt;在软件开发的漫长旅程中，许多经验都指向一个共识：好的开发实践源于深刻的理解、缜密的规划与对人性的洞察。要想构建高质量的系统，仅仅掌握技术是不够的，还需要理解需求背后的心理动因、平衡理性与感性，以及不断优化每一层的决策。&lt;/p&gt;
 &lt;h3 id="需求"&gt;需求&lt;/h3&gt;
 &lt;p&gt;起点往往是需求。虽然在表面上，需求似乎只是对功能的直接陈述，但实际上，它更像是浮出水面的冰山一角。其背后，是用户的欲望、动机、心理模式乃至生活经历。正如“更快的马”之于“更快的交通工具”那样，优秀的开发者应当具备穿透表面、直击本质的直觉能力。从用户的内在心理出发，才能更准确地识别其真实目标，并据此倒推出合适的设计、数据库结构、前后端逻辑及最终产品的形态。同时，由于不同用户间的需求常常存在冲突，调和这些冲突本身也是开发者必备的素养之一。尽管产品经理常担此重任，但开发者若也能参与需求分析，将更有效应对信息损失与沟通误差，从而提升交付质量。&lt;/p&gt;
@@ -154,8 +157,12 @@
 &lt;p&gt;帕累托法则（28 法则、少数法则）：一个程序 20% 的子程序消耗了 80% 的执行时间&lt;/p&gt;</description></item><item><title>2.信息的表示和处理</title><link>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</link><pubDate>Fri, 21 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</guid><description>&lt;h2 id="2信息的表示和处理"&gt;2.信息的表示和处理&lt;/h2&gt;
 &lt;h3 id="信息的存储"&gt;信息的存储&lt;/h3&gt;
 &lt;p&gt;通常情况下，程序将内存视为一个非常大的数组，数组的元素由一个个字节组成，每个字节都有唯一的数字表示，称为 Address(地址)，所有地址的集合就称为 Virtual Address Space(虚拟地址空间)&lt;/p&gt;
-&lt;p&gt;&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221101744.png" alt=""&gt;
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221439235.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221101744.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221439235.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;word size(字长): 决定了虚拟地址空间的大小，字长为 w 位的机器的虚拟地址空间 (程序使用连续的虚拟地址访问内存/磁盘) 的范围是 $0 \sim 2^{w} - 1$ （因为每一个 bit 位有 0 和 1 两种取值）&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;32 位系统（如 x86）的虚拟地址空间最大为 4GB ( $2^{32}$ Byte)&lt;/li&gt;
@@ -169,9 +176,13 @@
 &lt;p&gt;大多数 64 位机器向后兼容，可以运行 32 位程序&lt;/p&gt;
 &lt;p&gt;32 位程序与 64 位程序的区别是编译过程，而不是运行机器的类型&lt;/p&gt;
 &lt;p&gt;在编译时可以通过编译选项指定生成 32 位的程序还是 64 位的程序
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222358537.png" alt=""&gt;&lt;/p&gt;
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319222358537.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;不同的数据类型可能占用不同的大小，同时对于不同位数的机器也有区别，很多数据类型都是占用了多个字节空间
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222809671.png" alt=""&gt;&lt;/p&gt;
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319222809671.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;对于需要存储的数据，我们需要知道「该数据的地址是什么」以及「数据在内存中是如何排布的」&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -204,7 +215,9 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250321155438902.png" alt=""&gt;&lt;/p&gt;</description></item><item><title>1.计算机系统漫步</title><link>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</link><pubDate>Wed, 19 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</guid><description>&lt;h2 id="1计算机系统漫步"&gt;1.计算机系统漫步&lt;/h2&gt;
+&lt;p&gt;&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250321155438902.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;</description></item><item><title>1.计算机系统漫步</title><link>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</link><pubDate>Wed, 19 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</guid><description>&lt;h2 id="1计算机系统漫步"&gt;1.计算机系统漫步&lt;/h2&gt;
 &lt;p&gt;为什么要了解编译系统是如何工作的？&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;优化程序性能&lt;/li&gt;
@@ -212,7 +225,9 @@
 &lt;li&gt;避免安全漏洞&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="helloworld-程序的一生简述"&gt;HelloWorld 程序的一生简述&lt;/h3&gt;
-&lt;p&gt;&lt;img src="attachments/1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%AD%A5-20250319131409323.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/1.%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e6%bc%ab%e6%ad%a5-20250319131409323.png"
+ alt="" width="1440" height="305" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;一个 C 语言程序（例如 &lt;code&gt;hello.c&lt;/code&gt;）从编写到执行再到结束的整个生命周期&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;编译过程&lt;/strong&gt;：
@@ -247,7 +262,9 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id="计算机系统的硬件组成"&gt;计算机系统的硬件组成&lt;/h3&gt;
-&lt;p&gt;&lt;img src="attachments/1.%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E6%BC%AB%E6%AD%A5-20250319151147368.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/1.%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e6%bc%ab%e6%ad%a5-20250319151147368.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;CPU(Central Process Unit, 中央处理单元, 处理器)：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Program Count(PC, 程序计数器，指令指针)&lt;/strong&gt;：大小为一个 word(字) 的存储区域，存放某一条指令的地址

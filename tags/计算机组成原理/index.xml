@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>计算机组成原理 on CattleHorse's Blog</title><link>https://cattle0horse.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/</link><description>Recent content in 计算机组成原理 on CattleHorse's Blog</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 21 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://cattle0horse.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>2.信息的表示和处理</title><link>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</link><pubDate>Fri, 21 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/2-representation-and-processing-of-information/</guid><description>&lt;h2 id="2信息的表示和处理"&gt;2.信息的表示和处理&lt;/h2&gt;
 &lt;h3 id="信息的存储"&gt;信息的存储&lt;/h3&gt;
 &lt;p&gt;通常情况下，程序将内存视为一个非常大的数组，数组的元素由一个个字节组成，每个字节都有唯一的数字表示，称为 Address(地址)，所有地址的集合就称为 Virtual Address Space(虚拟地址空间)&lt;/p&gt;
-&lt;p&gt;&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221101744.png" alt=""&gt;
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319221439235.png" alt=""&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221101744.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221439235.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;word size(字长): 决定了虚拟地址空间的大小，字长为 w 位的机器的虚拟地址空间 (程序使用连续的虚拟地址访问内存/磁盘) 的范围是 $0 \sim 2^{w} - 1$ （因为每一个 bit 位有 0 和 1 两种取值）&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;32 位系统（如 x86）的虚拟地址空间最大为 4GB ( $2^{32}$ Byte)&lt;/li&gt;
@@ -16,9 +20,13 @@
 &lt;p&gt;大多数 64 位机器向后兼容，可以运行 32 位程序&lt;/p&gt;
 &lt;p&gt;32 位程序与 64 位程序的区别是编译过程，而不是运行机器的类型&lt;/p&gt;
 &lt;p&gt;在编译时可以通过编译选项指定生成 32 位的程序还是 64 位的程序
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222358537.png" alt=""&gt;&lt;/p&gt;
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319222358537.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;p&gt;不同的数据类型可能占用不同的大小，同时对于不同位数的机器也有区别，很多数据类型都是占用了多个字节空间
-&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250319222809671.png" alt=""&gt;&lt;/p&gt;
+&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319222809671.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;对于需要存储的数据，我们需要知道「该数据的地址是什么」以及「数据在内存中是如何排布的」&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -51,4 +59,6 @@
 			&lt;/tr&gt;
 	&lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;img src="attachments/2.%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA%E5%92%8C%E5%A4%84%E7%90%86-20250321155438902.png" alt=""&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;&lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250321155438902.png"
+ alt="" width="1920" height="1080" loading="lazy" class="loading-img"&gt;
+&lt;/p&gt;</description></item></channel></rss>
