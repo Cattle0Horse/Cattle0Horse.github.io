@@ -33,6 +33,7 @@ description = "By accumulating small steps, one can reach a thousand miles."
 mainSections = ["posts"]
 postHeaderContent = ""
 lazyImage = true
+imageLoading = true
 favicon = "/logo.png"
 extraCSSFiles = ["css/background.css"]
 extraHead = '''
