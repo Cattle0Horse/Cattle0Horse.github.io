@@ -22,6 +22,10 @@ theme = "yinyang"
     noClasses = true
     style = "tango"
     tabWidth = 2
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+    ordered = false
 
 [params]
 headTitle = "CattleHorse's Blog"
@@ -40,6 +44,8 @@ extraHead = '''
   </style>
 '''
 editPageRepo = "https://github.com/Cattle0Horse/Cattle0Horse.github.io"
+markdownActions = true
+tableOfContents = true
 
 [params.author]
 homepage = "https://github.com/cattle0horse"
