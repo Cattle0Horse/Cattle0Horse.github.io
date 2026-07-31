@@ -19,7 +19,7 @@ theme = "yinyang"
       unsafe = true
   [markup.highlight]
     guessSyntax = true
-    noClasses = true
+    noClasses = false
     style = "tango"
     tabWidth = 2
   [markup.tableOfContents]
@@ -47,11 +47,20 @@ extraHead = '''
 editPageRepo = "https://github.com/Cattle0Horse/Cattle0Horse.github.io"
 markdownActions = true
 tableOfContents = true
+codeMaxLines = 15
+editPageBranch = "main"
+editPageText = "有错误？欢迎提交 Pull Request"
 
 [params.author]
 homepage = "https://github.com/cattle0horse"
 name = "CattleHorse"
 
+[[params.socials]]
+name = "Tags"
+link = "/tags/"
+[[params.socials]]
+name = "Categories"
+link = "/categories/"
 [[params.socials]]
 name = "RSS"
 link = "/index.xml"
