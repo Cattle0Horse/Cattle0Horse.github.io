@@ -26,7 +26,7 @@
 &lt;p&gt;
 &lt;span class="loading-image-frame is-loading" style="--image-width: 1280px; --image-ratio: 1280 / 720;"&gt;
 &lt;img src="attachments/BV1QaKnzCEUj-20250705133224497.png"
- alt="" width="1280" height="720" loading="lazy" class="loading-img" data-original-src="attachments/BV1QaKnzCEUj-20250705133224497.png"&gt;
+ alt="" width="1280" height="720" loading="lazy" class="loading-img" decoding="async" data-original-src="attachments/BV1QaKnzCEUj-20250705133224497.png"&gt;
  &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
  &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;
 &lt;/span&gt;
