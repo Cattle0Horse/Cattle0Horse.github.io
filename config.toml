@@ -31,9 +31,6 @@ theme = "yinyang"
 headTitle = "CattleHorse's Blog"
 description = "By accumulating small steps, one can reach a thousand miles."
 mainSections = ["posts"]
-postHeaderContent = ""
-lazyImage = true
-imageLoading = true
 favicon = "/logo.png"
 extraCSSFiles = ["css/background.css"]
 extraHead = '''
@@ -44,12 +41,28 @@ extraHead = '''
     pre, code { font-family: "Fira Code", "SF Mono", Menlo, monospace; }
   </style>
 '''
-editPageRepo = "https://github.com/Cattle0Horse/Cattle0Horse.github.io"
-markdownActions = true
 tableOfContents = true
 codeMaxLines = 15
-editPageBranch = "main"
-editPageText = "有错误？欢迎提交 Pull Request"
+
+[params.image]
+enabled = true
+lazy = true
+loading = true
+
+[params.postContent]
+enabled = true
+header = ""
+footer = ""
+
+[params.actions]
+enabled = true
+copyMarkdown = true
+
+[params.actions.editPage]
+enabled = true
+repo = "https://github.com/Cattle0Horse/Cattle0Horse.github.io"
+branch = "main"
+text = "有错误？欢迎提交 Pull Request"
 
 [params.author]
 homepage = "https://github.com/cattle0horse"
