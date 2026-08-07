@@ -1,0 +1,38 @@
+name: sync-theme
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # submodule 的 url 是 SSH 形式，CI 里没有 SSH key，改写为 HTTPS
+      - name: Rewrite submodule URL for CI
+        run: git config --global url."https://github.com/".insteadOf "git@github.com:"
+
+      - name: Update theme submodule to latest
+        run: git submodule update --init --remote themes/yinyang
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add themes/yinyang
+          if git diff --cached --quiet; then
+            echo "Theme already up to date, nothing to commit"
+          else
+            # 从 index 里取 submodule 指针的短 hash 作为 commit message
+            new_ref=$(git ls-files -s themes/yinyang | awk '{print $2}')
+            short_hash=$(git rev-parse --short "$new_ref")
+            git commit -m "chore: sync theme to ${short_hash}"
+            git push
+          fi
