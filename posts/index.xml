@@ -42,27 +42,18 @@
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于流量相对平稳的场景，通常在请求量较低的应用中使用。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
-&lt;span class="loading-image-frame" style="--image-width: 1080px; --image-ratio: 1080 / 571;"&gt;
+&lt;span class="loading-image-frame is-loading" style="--image-width: 1080px; --image-ratio: 1080 / 571;"&gt;
 &lt;img src="attachments/%e9%99%90%e6%b5%81-20250518142232339.png"
  alt="" width="1080" height="571" loading="lazy" class="loading-img" data-original-src="attachments/%e9%99%90%e6%b5%81-20250518142232339.png"&gt;
  &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
+ &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;
+&lt;/span&gt;
  &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
  &lt;/span&gt;
 &lt;/span&gt;
 &lt;/p&gt;
 &lt;p&gt;具体来说，当大量请求在一个窗口的特别早或特别晚时，就会出现“突刺”现象。太早则窗口剩余时间无法处理；太晚则可能和下一个窗口的大量请求堆积，导致超出阈值。&lt;/p&gt;
-&lt;p&gt;例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p&gt;
-&lt;p&gt;
-&lt;span class="loading-image-frame" style="--image-width: 1045px; --image-ratio: 1045 / 453;"&gt;
-&lt;img src="attachments/%e9%99%90%e6%b5%81-20250518142042844.png"
- alt="" width="1045" height="453" loading="lazy" class="loading-img" data-original-src="attachments/%e9%99%90%e6%b5%81-20250518142042844.png"&gt;
- &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
- &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
- &lt;/span&gt;
-&lt;/span&gt;
-&lt;/p&gt;</description></item><item><title>了凡四训</title><link>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
+&lt;p&gt;例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p&gt;</description></item><item><title>了凡四训</title><link>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</link><pubDate>Sat, 05 Jul 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/liao-fans-four-lessons/</guid><description>&lt;h2 id="前言"&gt;前言&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;本文仅为&lt;a href="https://www.bilibili.com/video/BV1QaKnzCEUj"&gt;该视频&lt;/a&gt;的文案，并不完全代表个人想法&lt;/li&gt;
 &lt;li&gt;兼听则明偏信则暗&lt;/li&gt;
@@ -88,11 +79,12 @@
 &lt;h5 id="外在气场"&gt;外在气场&lt;/h5&gt;
 &lt;p&gt;第一，&lt;strong&gt;面部表情&lt;/strong&gt;。发哥露出霸气侧漏的一面时，你会发现他最引人注目的是眼神和微笑。人在不自信、紧张的时候，会不自觉地眨眼，且次数很频繁，眼神不定。而发哥正好相反，当他注视别人的时候，眼神始终聚焦对方，保持微笑。被看的人好像受到了极度的关注。从心理学上来说，当人的大脑感觉被关注，就会对你造成心理压制，也会主动将对方列为警惕对象，一定程度上放大你的紧张情绪。生活中最简单的做法就是与人交流时，&lt;strong&gt;眼神不要刻意回避，要坚定且有神，但不宜超过五秒&lt;/strong&gt;，否则攻击性太强，容易被打。时间长了，你会发现越来越多的人愿意与你交流，你的眼神无形中给你带来很多的便利。这就是面部表情产生的气场力量，它能通过视觉效果影响别人对你的判断。如果你试了很多次，发现没有办法坚定自己的眼神，也无法控制自己的表情，那可能是不够自信。不用怕，多读书，知识储备足够，到哪里都有自信。&lt;/p&gt;
 &lt;p&gt;
-&lt;span class="loading-image-frame" style="--image-width: 1280px; --image-ratio: 1280 / 720;"&gt;
+&lt;span class="loading-image-frame is-loading" style="--image-width: 1280px; --image-ratio: 1280 / 720;"&gt;
 &lt;img src="attachments/BV1QaKnzCEUj-20250705133224497.png"
  alt="" width="1280" height="720" loading="lazy" class="loading-img" data-original-src="attachments/BV1QaKnzCEUj-20250705133224497.png"&gt;
  &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
+ &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;
+&lt;/span&gt;
  &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
  &lt;/span&gt;
 &lt;/span&gt;
@@ -112,10 +104,7 @@
 &lt;p&gt;《汉书·循吏传序》说：“光因循守职无所改作。”这句话描述了霍光在汉昭帝时期的行为。霍光在汉昭帝幼年时执掌政权，面对国家财政空虚、百姓困苦的局面，他选择沿袭旧制，坚守职责，没有进行任何改革或创新，最终导致他的失败和被罢免。成语“因循守旧”也来自于此。&lt;/p&gt;
 &lt;p&gt;所以，“因循”如果放在现在，可以理解成顽固守旧的老师，无法接受新的知识和创新思维；老旧思想的上司，无法接受新人的建议和好的点子；封闭自我的本人，无法接受一切，人生止步于此。&lt;/p&gt;
 &lt;p&gt;“因循”是缺乏创造力、不愿意做出任何改变的代名词。那么从字面上说，“反因循”就是愿意去改变、愿意去创造、愿意去学习和接受新的理念和知识。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;“反因循”意味着这样一个信念：通过不断的精进和学习，我们可以让自己变得更好&lt;/strong&gt;。这个信念也可以这样来表述：每一个人的才能、命运都不是固定的，只要你愿意终身学习，愿意去不断接受新的理念和知识，就可以改变你不如意的状态，过自己想过的生活。&lt;/p&gt;
-&lt;h4 id="袁了凡的逆转人生"&gt;袁了凡的逆转人生&lt;/h4&gt;
-&lt;p&gt;袁了凡的逆转人生：袁了凡本人就是“反因循”的实践者，他的这个信念是被云谷禅师的一句话点醒的。云谷禅师对袁了凡说了这么一句话：“汝二十年来被他算定，不曾转动一毫，岂非凡夫？”这句话的意思是：你袁了凡二十年来被一个算命先生算定了，一点都不曾想到可以有别的活法，难道不是一个凡夫吗？云谷禅师为什么要对袁了凡说这句话呢？这要从袁了凡的经历慢慢说起。&lt;/p&gt;
-&lt;p&gt;袁了凡原来的名字叫做袁表，号雪海，一般人叫他袁学海。他明朝嘉靖十二年（公元 1533 年）出生在浙江省嘉善县的渭塘镇，祖籍是江苏吴江。在他 14 岁的时候，父亲就去世了。按照父亲生前的心愿，他走上了学医的路。本来平静的生活不久被一位算命的孔先生打破。算命先生说袁学海是当官的命，并且精确地说出了他什么时候会考取什么功名，什么时候能当上官。于是袁学海毅然走上了科举和当官的道路。神奇的是，他走的每一步都没有逃出孔先生算出来的命数。&lt;/p&gt;</description></item><item><title>代码大全2</title><link>https://cattle0horse.github.io/posts/code-complete-2/</link><pubDate>Sat, 24 May 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/code-complete-2/</guid><description>&lt;h2 id="ai-渐进式叙述"&gt;AI 渐进式叙述&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;“反因循”意味着这样一个信念：通过不断的精进和学习，我们可以让自己变得更好&lt;/strong&gt;。这个信念也可以这样来表述：每一个人的才能、命运都不是固定的，只要你愿意终身学习，愿意去不断接受新的理念和知识，就可以改变你不如意的状态，过自己想过的生活。&lt;/p&gt;</description></item><item><title>代码大全2</title><link>https://cattle0horse.github.io/posts/code-complete-2/</link><pubDate>Sat, 24 May 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/code-complete-2/</guid><description>&lt;h2 id="ai-渐进式叙述"&gt;AI 渐进式叙述&lt;/h2&gt;
 &lt;p&gt;在软件开发的漫长旅程中，许多经验都指向一个共识：好的开发实践源于深刻的理解、缜密的规划与对人性的洞察。要想构建高质量的系统，仅仅掌握技术是不够的，还需要理解需求背后的心理动因、平衡理性与感性，以及不断优化每一层的决策。&lt;/p&gt;
 &lt;h3 id="需求"&gt;需求&lt;/h3&gt;
 &lt;p&gt;起点往往是需求。虽然在表面上，需求似乎只是对功能的直接陈述，但实际上，它更像是浮出水面的冰山一角。其背后，是用户的欲望、动机、心理模式乃至生活经历。正如“更快的马”之于“更快的交通工具”那样，优秀的开发者应当具备穿透表面、直击本质的直觉能力。从用户的内在心理出发，才能更准确地识别其真实目标，并据此倒推出合适的设计、数据库结构、前后端逻辑及最终产品的形态。同时，由于不同用户间的需求常常存在冲突，调和这些冲突本身也是开发者必备的素养之一。尽管产品经理常担此重任，但开发者若也能参与需求分析，将更有效应对信息损失与沟通误差，从而提升交付质量。&lt;/p&gt;
@@ -181,26 +170,28 @@
 &lt;h3 id="信息的存储"&gt;信息的存储&lt;/h3&gt;
 &lt;p&gt;通常情况下，程序将内存视为一个非常大的数组，数组的元素由一个个字节组成，每个字节都有唯一的数字表示，称为 Address(地址)，所有地址的集合就称为 Virtual Address Space(虚拟地址空间)&lt;/p&gt;
 &lt;p&gt;
-&lt;span class="loading-image-frame" style="--image-width: 1920px; --image-ratio: 1920 / 1080;"&gt;
+&lt;span class="loading-image-frame is-loading" style="--image-width: 1920px; --image-ratio: 1920 / 1080;"&gt;
 &lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221101744.png"
  alt="" width="1920" height="1080" loading="lazy" class="loading-img" data-original-src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221101744.png"&gt;
  &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
+ &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;
+&lt;/span&gt;
  &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
  &lt;/span&gt;
 &lt;/span&gt;
 
 
-&lt;span class="loading-image-frame" style="--image-width: 1920px; --image-ratio: 1920 / 1080;"&gt;
+&lt;span class="loading-image-frame is-loading" style="--image-width: 1920px; --image-ratio: 1920 / 1080;"&gt;
 &lt;img src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221439235.png"
  alt="" width="1920" height="1080" loading="lazy" class="loading-img" data-original-src="attachments/2.%e4%bf%a1%e6%81%af%e7%9a%84%e8%a1%a8%e7%a4%ba%e5%92%8c%e5%a4%84%e7%90%86-20250319221439235.png"&gt;
  &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
+ &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;
+&lt;/span&gt;
  &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
  &lt;/span&gt;
 &lt;/span&gt;
 &lt;/p&gt;
-&lt;p&gt;word size(字长): 决定了虚拟地址空间的大小，字长为 w 位的机器的虚拟地址空间 (程序使用连续的虚拟地址访问内存/磁盘) 的范围是 $0 \sim 2^{w} - 1$ （因为每一个 bit 位有 0 和 1 两种取值）&lt;/p&gt;</description></item><item><title>1.计算机系统漫步</title><link>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</link><pubDate>Wed, 19 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</guid><description>&lt;h2 id="1计算机系统漫步"&gt;1.计算机系统漫步&lt;/h2&gt;
+&lt;p&gt;word size(字长): 决定了虚拟地址空间的大小，字长为 w 位的机器的虚拟地址空间 (程序使用连续的虚拟地址访问内存/磁盘) 的范围是 &lt;span class="katex"&gt;&lt;span class="katex-mathml"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;∼&lt;/mo&gt;&lt;msup&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;mi&gt;w&lt;/mi&gt;&lt;/msup&gt;&lt;mo&gt;−&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;0 \sim 2^{w} - 1&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class="katex-html" aria-hidden="true"&gt;&lt;span class="base"&gt;&lt;span class="strut" style="height:0.6444em;"&gt;&lt;/span&gt;&lt;span class="mord"&gt;0&lt;/span&gt;&lt;span class="mspace" style="margin-right:0.2778em;"&gt;&lt;/span&gt;&lt;span class="mrel"&gt;∼&lt;/span&gt;&lt;span class="mspace" style="margin-right:0.2778em;"&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="base"&gt;&lt;span class="strut" style="height:0.7477em;vertical-align:-0.0833em;"&gt;&lt;/span&gt;&lt;span class="mord"&gt;&lt;span class="mord"&gt;2&lt;/span&gt;&lt;span class="msupsub"&gt;&lt;span class="vlist-t"&gt;&lt;span class="vlist-r"&gt;&lt;span class="vlist" style="height:0.6644em;"&gt;&lt;span style="top:-3.063em;margin-right:0.05em;"&gt;&lt;span class="pstrut" style="height:2.7em;"&gt;&lt;/span&gt;&lt;span class="sizing reset-size6 size3 mtight"&gt;&lt;span class="mord mtight"&gt;&lt;span class="mord mathnormal mtight" style="margin-right:0.02691em;"&gt;w&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="mspace" style="margin-right:0.2222em;"&gt;&lt;/span&gt;&lt;span class="mbin"&gt;−&lt;/span&gt;&lt;span class="mspace" style="margin-right:0.2222em;"&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="base"&gt;&lt;span class="strut" style="height:0.6444em;"&gt;&lt;/span&gt;&lt;span class="mord"&gt;1&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt; （因为每一个 bit 位有 0 和 1 两种取值）&lt;/p&gt;</description></item><item><title>1.计算机系统漫步</title><link>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</link><pubDate>Wed, 19 Mar 2025 00:00:00 +0000</pubDate><guid>https://cattle0horse.github.io/posts/csapp/1-computer-system-walk/</guid><description>&lt;h2 id="1计算机系统漫步"&gt;1.计算机系统漫步&lt;/h2&gt;
 &lt;p&gt;为什么要了解编译系统是如何工作的？&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;优化程序性能&lt;/li&gt;
@@ -209,11 +200,12 @@
 &lt;/ul&gt;
 &lt;h3 id="helloworld-程序的一生简述"&gt;HelloWorld 程序的一生简述&lt;/h3&gt;
 &lt;p&gt;
-&lt;span class="loading-image-frame" style="--image-width: 1440px; --image-ratio: 1440 / 305;"&gt;
+&lt;span class="loading-image-frame is-loading" style="--image-width: 1440px; --image-ratio: 1440 / 305;"&gt;
 &lt;img src="attachments/1.%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e6%bc%ab%e6%ad%a5-20250319131409323.png"
  alt="" width="1440" height="305" loading="lazy" class="loading-img" data-original-src="attachments/1.%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e6%bc%ab%e6%ad%a5-20250319131409323.png"&gt;
  &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
+ &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;
+&lt;/span&gt;
  &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
  &lt;/span&gt;
 &lt;/span&gt;
@@ -253,11 +245,12 @@
 &lt;/ol&gt;
 &lt;h3 id="计算机系统的硬件组成"&gt;计算机系统的硬件组成&lt;/h3&gt;
 &lt;p&gt;
-&lt;span class="loading-image-frame" style="--image-width: 1920px; --image-ratio: 1920 / 1080;"&gt;
+&lt;span class="loading-image-frame is-loading" style="--image-width: 1920px; --image-ratio: 1920 / 1080;"&gt;
 &lt;img src="attachments/1.%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e6%bc%ab%e6%ad%a5-20250319151147368.png"
  alt="" width="1920" height="1080" loading="lazy" class="loading-img" data-original-src="attachments/1.%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e6%bc%ab%e6%ad%a5-20250319151147368.png"&gt;
  &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
+ &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;
+&lt;/span&gt;
  &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
  &lt;/span&gt;
 &lt;/span&gt;

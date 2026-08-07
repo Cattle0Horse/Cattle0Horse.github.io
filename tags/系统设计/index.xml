@@ -13,24 +13,15 @@
 &lt;li&gt;&lt;strong&gt;适用场景&lt;/strong&gt;：适用于流量相对平稳的场景，通常在请求量较低的应用中使用。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;
-&lt;span class="loading-image-frame" style="--image-width: 1080px; --image-ratio: 1080 / 571;"&gt;
+&lt;span class="loading-image-frame is-loading" style="--image-width: 1080px; --image-ratio: 1080 / 571;"&gt;
 &lt;img src="attachments/%e9%99%90%e6%b5%81-20250518142232339.png"
  alt="" width="1080" height="571" loading="lazy" class="loading-img" data-original-src="attachments/%e9%99%90%e6%b5%81-20250518142232339.png"&gt;
  &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
+ &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;
+&lt;/span&gt;
  &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
  &lt;/span&gt;
 &lt;/span&gt;
 &lt;/p&gt;
 &lt;p&gt;具体来说，当大量请求在一个窗口的特别早或特别晚时，就会出现“突刺”现象。太早则窗口剩余时间无法处理；太晚则可能和下一个窗口的大量请求堆积，导致超出阈值。&lt;/p&gt;
-&lt;p&gt;例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p&gt;
-&lt;p&gt;
-&lt;span class="loading-image-frame" style="--image-width: 1045px; --image-ratio: 1045 / 453;"&gt;
-&lt;img src="attachments/%e9%99%90%e6%b5%81-20250518142042844.png"
- alt="" width="1045" height="453" loading="lazy" class="loading-img" data-original-src="attachments/%e9%99%90%e6%b5%81-20250518142042844.png"&gt;
- &lt;span class="loading-failed loading-retry" role="button" tabindex="0" aria-label="点击重试" data-tooltip="点击重试" hidden&gt;
- &lt;span class="loading-failed-icon action-icon" aria-hidden="true"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="18" height="18" rx="2"/&gt;&lt;path d="m3 16 5-5 4 4 2-2 7 7"/&gt;&lt;path d="m17 8-5 5"/&gt;&lt;path d="m12 8 5 5"/&gt;&lt;/svg&gt;&lt;/span&gt;
- &lt;span class="loading-failed-text"&gt;点击重试&lt;/span&gt;
- &lt;/span&gt;
-&lt;/span&gt;
-&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;例如在 1 分钟内，5 个请求都是在前 30s 过来的，那么后面的 30s 的请求都会被拒绝，而系统此时是空闲的。另外还有“临界问题”，如果 5 个请求是在后 30s 过来的，而下一个 1 分钟的 5 个请求在前 30s 过来，此时系统在这 1 分钟内就需要处理 200 个请求，跟我们想要的不符合。&lt;/p&gt;</description></item></channel></rss>
