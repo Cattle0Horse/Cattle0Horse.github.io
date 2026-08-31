@@ -6,6 +6,21 @@ theme = "yinyang"
 #[permalinks]
 #posts = "/blog/:slug/"
 
+# Blog RSS 开关：从 home 中移除 "RSS" 即禁用 /index.xml。
+[outputs]
+home = ["HTML", "RSS"]
+section = ["HTML"]
+taxonomy = ["HTML"]
+term = ["HTML"]
+
+# Notes RSS 开关：删除此 cascade，或将 outputs 改为 ["HTML"] 即禁用 /notes/index.xml。
+[[cascade]]
+outputs = ["HTML", "RSS"]
+
+[cascade.target]
+kind = "section"
+path = "/notes"
+
 # 代码高亮
 [markup]
   [markup.goldmark]
