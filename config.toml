@@ -59,6 +59,11 @@ extraHead = '''
 tableOfContents = true
 codeMaxLines = 15
 
+[params.colorScheme]
+default = "yinyang"
+available = ["yinyang", "solarized"]
+allowUserChoice = true
+
 [params.image]
 enabled = true
 lazy = true
@@ -86,6 +91,9 @@ name = "CattleHorse"
 [[params.socials]]
 name = "Theme"
 link = "https://github.com/Cattle0Horse/hugo-theme-yinyang"
+[[params.socials]]
+name = "Notes"
+link = "/notes/"
 [[params.socials]]
 name = "Tags"
 link = "/tags/"
