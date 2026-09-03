@@ -4,6 +4,7 @@ date: 2026-01-10
 categories: ["Tech"]
 draft: false
 tags: ["Agent"]
+ai: "assisted"
 ---
 
 很多 Agent 系统的问题，表面上看是模型不够稳定，实际上是我们一开始就把问题放错了位置

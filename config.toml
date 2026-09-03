@@ -6,6 +6,17 @@ theme = "yinyang"
 #[permalinks]
 #posts = "/blog/:slug/"
 
+[permalinks.taxonomy]
+note_tags = "/notes/tags/"
+
+[permalinks.term]
+note_tags = "/notes/tags/:slug/"
+
+[taxonomies]
+category = "categories"
+tag = "tags"
+note_tag = "note_tags"
+
 # Blog RSS 开关：从 home 中移除 "RSS" 即禁用 /index.xml。
 [outputs]
 home = ["HTML", "RSS"]

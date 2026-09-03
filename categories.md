@@ -1,0 +1,4 @@
+- Relationships：关系、沟通、陪伴与共情
+- Cognition：认知、心理、教育与处事方法
+- Values：生活哲学、价值观与人生取舍
+- Technology：技术、产品等

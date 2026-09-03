@@ -2,6 +2,6 @@
 date: '{{ .Date }}'
 draft: false
 # title: ""
-# tags: []
+# note_tags: []
 # source: []
 ---
