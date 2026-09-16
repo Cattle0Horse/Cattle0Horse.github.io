@@ -134,17 +134,17 @@ Operating System(OS，操作系统)：是 Application Program(应用程序) 与 
 - **用户空间（User Space）**
   - **从 0x0000000000000000 到 0x00007FFFFFFFFFFF**（Linux x86_64 默认前 128TB）
   - 主要包括：
-    1.  **代码段（.text）**：存储程序的可执行代码，通常是 **只读的**。
-    2.  **数据段（.data/.bss）**：从可执行目标文件中加载而来
+    1. **代码段（.text）**：存储程序的可执行代码，通常是 **只读的**。
+    2. **数据段（.data/.bss）**：从可执行目标文件中加载而来
         - **.data**：已初始化的全局和静态变量。
         - **.bss**：未初始化的全局和静态变量。
-    3.  **堆（Heap）**：
+    3. **堆（Heap）**：
         - 由 `malloc()`、`new` 分配，向高地址扩展。
-    4.  **共享库（Shared Libraries）**：
+    4. **共享库（Shared Libraries）**：
         - `libc.so` 等动态链接库（如 `printf` 函数），通常加载在中间地址范围（如 0x7Fxxxx）。
-    5.  **栈（Stack）**：
+    5. **栈（Stack）**：
         - 用于局部变量、函数调用等，**向低地址扩展**。
-    6.  **内存映射区（Memory-Mapped Files & Anonymous Mapping）**：
+    6. **内存映射区（Memory-Mapped Files & Anonymous Mapping）**：
         - `mmap()` 分配的区域，如共享内存、映射文件等。
 - **内核空间（Kernel Space）**
   - **从 0xFFFF800000000000 到 0xFFFFFFFFFFFFFFFF**（Linux x86_64 默认 128TB）

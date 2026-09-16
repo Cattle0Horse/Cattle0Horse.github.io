@@ -28,6 +28,7 @@ exclude = [
     "LICENSE.md",
     ".rumdl.toml",
     "*.tmp",
+    "themes"
 ]
 
 # ── 标题 ──
