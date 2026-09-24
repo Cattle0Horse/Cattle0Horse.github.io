@@ -75,6 +75,9 @@ default = "yinyang"
 available = ["yinyang", "solarized"]
 allowUserChoice = true
 
+[params.busuanzi]
+enabled = true
+
 [params.image]
 enabled = true
 lazy = true
