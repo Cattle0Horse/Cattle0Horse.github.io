@@ -13,7 +13,6 @@ note_tags = "/notes/tags/"
 note_tags = "/notes/tags/:slug/"
 
 [taxonomies]
-category = "categories"
 tag = "tags"
 note_tag = "note_tags"
 
@@ -70,18 +69,20 @@ extraHead = '''
 tableOfContents = true
 codeMaxLines = 15
 
-[params.colorScheme]
-default = "yinyang"
-available = ["yinyang", "solarized"]
-allowUserChoice = true
-
 [params.busuanzi]
 enabled = true
+
+[params.colorScheme]
+default = "indigo"
+available = ["indigo", "violet", "graphite"]
+allowUserChoice = true
 
 [params.image]
 enabled = true
 lazy = true
 loading = true
+border = true
+galleryBorder = true
 
 [params.postContent]
 enabled = true
@@ -111,9 +112,6 @@ link = "/notes/"
 [[params.socials]]
 name = "Tags"
 link = "/tags/"
-[[params.socials]]
-name = "Categories"
-link = "/categories/"
 [[params.socials]]
 name = "RSS"
 link = "/index.xml"

@@ -2,3 +2,5 @@ resources
 public
 .hugo_build.lock
 todo.md
+WORKSPACE.md
+DRAFT.md

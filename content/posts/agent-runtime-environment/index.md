@@ -1,7 +1,6 @@
 ---
 title: "Agent 真正需要的不是更长 prompt，而是一个可运行的环境"
 date: 2026-01-10
-categories: ["Tech"]
 draft: false
 tags: ["Agent"]
 ai: "assisted"

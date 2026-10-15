@@ -1,7 +1,6 @@
 ---
 title: "了凡四训"
 date: 2025-07-05
-categories: ["Think"]
 draft: false
 tags: ["Book"]
 ---

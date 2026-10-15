@@ -1,7 +1,6 @@
 ---
 title: "2.信息的表示和处理"
 date: 2025-03-21
-categories: ["Tech"]
 draft: false
 tags: ["CSAPP", "计算机组成原理"]
 math: true

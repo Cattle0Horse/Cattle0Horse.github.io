@@ -1,7 +1,6 @@
 ---
 title: 代码大全2
 date: "2025-05-24"
-categories: ["Tech"]
 draft: false
 tags: ["Book"]
 ---

@@ -1,7 +1,6 @@
 ---
 title: "限流初识"
 date: 2025-07-10
-categories: ["Tech"]
 draft: false
 tags: ["系统设计"]
 ---
