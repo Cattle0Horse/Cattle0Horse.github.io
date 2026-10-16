@@ -58,23 +58,19 @@ description = "By accumulating small steps, one can reach a thousand miles."
 mainSections = ["posts"]
 favicon = "/logo.png"
 extraCSSFiles = ["css/background.css"]
-extraHead = '''
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/lxgwwenkai-regular/result.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.min.css" />
-  <style>
-    body { font-family: "LXGW WenKai", sans-serif; }
-    pre, code { font-family: "Fira Code", "SF Mono", Menlo, monospace; }
-  </style>
-'''
 tableOfContents = true
 codeMaxLines = 15
 
 [params.busuanzi]
 enabled = true
 
+[params.notFound]
+# 按当前设备筛选后随机显示；未配置或没有有效项时启用全部，再按设备筛选。
+available = ["sleep", "black-hole", "flashlight", "receipt", "constellation", "puzzle", "terminal", "channel", "cat", "draw-home"]
+
 [params.colorScheme]
 default = "indigo"
-available = ["indigo", "violet", "graphite"]
+available = ["indigo", "violet", "teal", "amber", "rose", "graphite"]
 allowUserChoice = true
 
 [params.image]
@@ -82,7 +78,7 @@ enabled = true
 lazy = true
 loading = true
 border = true
-galleryBorder = true
+galleryBorder = false
 
 [params.postContent]
 enabled = true
@@ -99,22 +95,31 @@ repo = "https://github.com/Cattle0Horse/Cattle0Horse.github.io"
 branch = "main"
 text = "有错误？欢迎提交 Pull Request"
 
+[params.aiLabel]
+enabled = true
+assisted = "AI 辅助创作"
+generated = "AI 生成 · 经人工编辑"
+
 [params.author]
 homepage = "https://github.com/cattle0horse"
 name = "CattleHorse"
 
 [[params.socials]]
-name = "Theme"
-link = "https://github.com/Cattle0Horse/hugo-theme-yinyang"
+name = "Tags"
+link = "/tags/"
+icon = "tag"
+
 [[params.socials]]
 name = "Notes"
 link = "/notes/"
-[[params.socials]]
-name = "Tags"
-link = "/tags/"
+icon = "file"
+
 [[params.socials]]
 name = "RSS"
 link = "/index.xml"
+icon = "rss"
+
 [[params.socials]]
 name = "Github"
 link = "https://github.com/cattle0horse"
+icon = "github"
