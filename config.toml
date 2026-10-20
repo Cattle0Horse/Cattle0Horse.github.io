@@ -19,6 +19,7 @@ note_tag = "note_tags"
 # Blog RSS 开关：从 home 中移除 "RSS" 即禁用 /index.xml。
 [outputs]
 home = ["HTML", "RSS"]
+page = ["HTML", "Markdown"]
 section = ["HTML"]
 taxonomy = ["HTML"]
 term = ["HTML"]
