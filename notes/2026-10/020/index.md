@@ -1,14 +1,12 @@
 ---
 date: '2026-10-27T10:51:28+08:00'
 draft: false
-# title: ""
+title: "Skill 编写的六个常见问题"
 note_tags: ["Technology", "Agent", "skill",]
 source: ["https://www.bilibili.com/video/BV1o4Ku6TEv8/"]
 ---
 
 > [mattpocock: writing-for-agnets](https://github.com/mattpocock/skills/blob/main/skills/productivity/writing-for-agents/SKILL.md)
-
-# Skill 编写的六个常见问题
 
 Skill 的目标是提高 Agent 行为的可预测性：让执行过程稳定，让结果保留任务所需的变化。而不是让 Agent 每次的输出都一模一样。例如，头脑风暴可以产生不同创意，但发散、筛选和评估的流程应当一致。
 
