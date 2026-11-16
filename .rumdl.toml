@@ -1,206 +1,721 @@
-# 规则详细含义见 https://rumdl.dev/<mdxxx>/（全小写）
+#:schema https://raw.githubusercontent.com/rvben/rumdl/refs/heads/main/rumdl.schema.json
+# 完整配置：rumdl 0.3.2 的 90 条规则，按 MD 编号升序排列。
+# 官方文档与对应版本源码：https://github.com/rvben/rumdl/tree/v0.3.2/docs
+# 全局设置：https://rumdl.dev/global-settings/
+# 每条规则显式设置 enabled；有确定默认值的参数全部填写，并保留原有风格值。
+# 标为“自动 / 不设限制”的可选参数按约定不写赋值，以保留其特殊语义；TOML 不支持 null。
+# extends：不继承其他配置文件。通用 severity：不覆盖，保留各规则原生的诊断级别。
 
 [global]
-disable = [
-    "MD001", # 标题级别跳跃——原文用 ### 作为首个标题级别，是作者的结构选择
-    "MD013", # 禁用行长度限制
-    "MD014", # $ 命令须展示输出——KB 中命令示例给读者复制用，不需要输出
-    "MD023", # 标题必须在行首——允许缩进标题用于嵌套语义
-    "MD024", # 不允许重复标题——同名章节在不同上下文中常见
-    "MD025", # 只允许一个 H1——rumdl 把 frontmatter 的 `title` 也当作 H1，会把正文 H1 降级
-    "MD033", # 不允许内联 HTML——raw 内容中需要保留原始 HTML
-    "MD036", # 加粗短语应升级为标题——基于英文写作习惯，中文 **加粗** 常作段内强调，误判率极高
-    "MD041", # 首行必须是 H1——raw/* 文件首行是 YAML frontmatter，与此规则冲突
-    "MD044", # 专有名词大小写——基于英文专有名词，中文 KB 不适用
-    "MD059", # 链接文本须有描述性——KB 中常用 [1]、[2] 等短引用
-]
-
-respect_gitignore = true
-
-# MD040 需要大模型按代码内容语义判断语言；rumdl 只负责检测缺失，不自动补 text
-unfixable = ["MD040"]
-
+# 全部规则的启用与禁用均由下面的 [MDxxx].enabled 控制。
+# enabled=true：执行该规则；enabled=false：完全跳过该规则。
+# 规则内 fix=true 仅允许在 fmt / check --fix 时修复；fix=false 仍检查，只禁止该项可选修复。
+# 自动修复还受 global.unfixable 限制，单纯 check 不会写回文件。
+enable = []
+disable = []
+extend-enable = []
+extend-disable = []
+include = []  # 不额外限制文件扫描范围
+# 排除仓库/编辑器元数据、第三方依赖、构建产物、工具缓存和临时文件。
+# 不含 / 的目录名匹配任意层级；build/** 等含 / 的模式相对于项目根目录。
 exclude = [
-    ".git",
-    ".github",
-    "node_modules",
-    "CHANGELOG.md",
-    "LICENSE.md",
-    ".rumdl.toml",
-    "*.tmp",
-    "themes"
-]
+  # 版本控制与编辑器目录
+  ".git",
+  ".hg",
+  ".svn",
+  ".github",
+  ".idea",
+  ".vscode",
 
-# ── 标题 ──
+  # 第三方依赖与虚拟环境
+  "node_modules",
+  "vendor",
+  ".venv",
+  "venv",
+  ".tox",
+  "themes",
+
+  # Hugo 及常见工具的构建输出；不排除 content、static 等源目录
+  "public/**",
+  "resources/_gen/**",
+  "dist/**",
+  "build/**",
+  "out/**",
+  "target/**",
+  "coverage/**",
+
+  # 检查器、包管理器和解释器缓存
+  ".cache",
+  ".rumdl_cache",
+  ".pytest_cache",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".pnpm-store",
+  ".yarn/cache/**",
+  "__pycache__",
+
+  # 临时目录、编辑器交换文件与备份（含仍以 .md 结尾的副本）
+  "tmp",
+  "temp",
+  "*.tmp",
+  "*.tmp.md",
+  "*.bak",
+  "*.bak.md",
+  "*.orig",
+  "*.orig.md",
+  "*.swp",
+  "*.swo",
+  "*~",
+
+  # 沿用原有的非正文文件排除项
+  "CHANGELOG.md",
+  "LICENSE.md",
+  ".rumdl.toml",
+]
+respect-gitignore = true  # true：扫描目录时遵循 Git/.ignore 排除；false：扫描时不采用这些排除（显式 exclude 仍生效）
+line-length = 80  # 全局行长基准；MD013 已在自己的规则段中关闭
+output-format = "text"  # 默认诊断输出格式
+flavor = "standard"  # 保留现有 Markdown 方言
+fixable = []  # 不额外限制允许自动修复的规则
+# MD040 继续诊断缺失语言和标签不一致，但不自动补 text 或改写语言标签。
+unfixable = ["MD040"]
+cache = true  # true：复用检查结果缓存；false：每次重新检查
+cache-dir = ".rumdl_cache"  # 缓存目录，相对于项目根目录
+editorconfig = false  # true：从 .editorconfig 补充未配置的设置；false：不读取 .editorconfig
+
+[per-file-ignores]
+# 空表：不额外按文件禁用规则。
+
+[per-file-flavor]
+# 空表：不额外按文件覆盖 Markdown 方言。
+
+[code-block-tools]
+enabled = true  # true：按语言配置运行外部检查/格式化工具；false：跳过外部工具
+normalize-language = "linguist"  # 使用 Linguist 归一化语言标签
+on-error = "fail"  # 外部工具执行出错时失败
+on-missing-language-definition = "ignore"  # 忽略没有定义外部工具的语言
+on-missing-tool-binary = "warn"  # 缺少外部工具可执行文件时警告
+binary-preferences = {}  # 不覆盖外部工具可执行文件路径
+on-tool-version-mismatch = "warn"  # 工具版本不匹配时警告
+on-missing-language-tag = "ignore"  # 忽略缺少语言标签的代码块
+on-missing-mode-definition = "ignore"  # 忽略没有定义的执行模式
+on-no-tools-run = "ignore"  # 没有运行任何工具时忽略
+timeout = 30000  # 外部工具执行超时，单位为毫秒
+languages = {}  # 不配置逐语言的外部工具链
+language-aliases = {}  # 不配置额外的语言别名映射
+tools = {}  # 不注册额外的外部工具
+
+[MD001]
+# 标题级别每次最多增加一级：https://rumdl.dev/md001/
+# enabled=true 时检查标题级别跳跃；false 时允许原文保留跳级。
+enabled = true
+front-matter-title = true  # true：Frontmatter 标题计为隐含 H1；false：判断标题层级时只看正文标题
+# 自动 / 不设限制 — front-matter-title-pattern：不覆盖标题匹配模式，继续识别 title 字段。
 
 [MD003]
-style = "atx" # 统一用 #，不用 setext 或闭合式
-
-# ── 列表 ──
+# 标题标记风格：https://rumdl.dev/md003/
+# 统一使用 # 形式，不使用 Setext 或闭合式标题。
+enabled = true
+style = "atx"  # 此规则使用的风格
 
 [MD004]
-style = "dash" # 统一用 - 做无序列表标记
+# 无序列表标记风格：https://rumdl.dev/md004/
+# 统一用 - 作为无序列表标记。
+enabled = true
+style = "dash"  # 此规则使用的风格
 
 [MD005]
-# 同级列表项缩进量须一致（自动检测模式，无参数）
+# 同级列表项缩进一致：https://rumdl.dev/md005/
+enabled = true
 
 [MD007]
-indent = 2 # 无序列表嵌套每级缩进 2 空格
+# 无序列表缩进：https://rumdl.dev/md007/
+# 无序列表每级 2 个空格；混合有序列表时保留按父项正文列对齐的自动兼容行为。
+enabled = true
+indent = 2  # 每级缩进的空格数量
+start-indent = 2  # 首层列表选择缩进开头时使用的空格数
+start-indented = false  # true：首层无序列表可按 start-indent 缩进；false：首层列表从第 0 列开始
+# 自动 / 不设限制 — style：不固定为 fixed 或 text-aligned，保留混合列表的自动对齐与固定缩进兼容行为。
 
-[MD029]
-style = "ordered" # 有序列表用 1. 2. 3. 递增
+[MD009]
+# 行尾多余空格：https://rumdl.dev/md009/
+enabled = true
+br-spaces = 2  # Markdown 硬换行允许的尾随空格数量
+list-item-empty-lines = false  # true：允许列表项空行保留缩进空格；false：这些空格也按 strict/br-spaces 检查
+# strict=false：恰好 br-spaces 个行尾空格按有意硬换行保留，并跳过代码块内部。
+# strict=true：仅在同一段落还有后续正文、确实会渲染为硬换行时保留这些空格；
+# 标题末尾、段落/列表项末尾等不产生换行的位置会报告，代码块内部也会检查。
+# 例如 br-spaces=2 时，标题末尾两个空格在 false 模式保留，在 true 模式报告。
+# 两种模式都保留跨行行内代码里的字面空白；其他例外仍由 list-item-empty-lines 等参数控制。
+strict = false
 
-[MD030]
-ul_single = 1 # 无序列表单行项，标记后 1 个空格
-ol_single = 1 # 有序列表单行项，标记后 1 个空格
-ul_multi = 1  # 无序列表多行项，标记后 1 个空格
-ol_multi = 1  # 有序列表多行项，标记后 1 个空格
-
-[MD032]
-allow_lazy_continuation = true # 允许列表续行懒缩进
-
-[MD069]
-# 不允许连续重复的列表标记（无参数）
-
-[MD076]
-style = "tight"                 # 列表项之间不留空行；项内部允许多段之间的空行
-allow_loose_continuation = true
-
-[MD077]
-# 列表续行缩进须一致（无参数，由全局 flavor 控制）
-
-# ── 代码块 ──
-
-[MD031]
-# 围栏代码块前后须有空行
-
-[MD040]
-style = "consistent" # 统一语言标签；缺失语言只检测，不自动修复
-
-[MD046]
-style = "fenced" # 统一用围栏代码块，不用缩进式
-
-[MD048]
-style = "backtick" # 统一用 ``` 做围栏，不用 ~~~
-
-[MD070]
-enabled = true # 嵌套代码块须用更长围栏——默认关闭，需显式启用
-
-# ── 强调 ──
-
-[MD037]
-# 强调标记内侧不应有多余空格
-
-[MD049]
-style = "asterisk" # 统一用 * 做斜体
-
-[MD050]
-style = "asterisk" # 统一用 ** 做粗体
-
-# ── 链接 ──
+[MD010]
+# 使用空格而非 Tab 缩进：https://rumdl.dev/md010/
+enabled = true
+code-blocks = false  # true：代码块和行内代码中的 Tab 也检查；false：跳过它们（行内代码的 Tab 始终不自动改写）
+ignore-code-languages = []  # 跳过这些语言的代码块
+spaces-per-tab = 4  # 修复时每个 Tab 替换的空格数
 
 [MD011]
-# 检测反向链接语法 ](url)[text
+# 链接文字与目标的括号顺序：https://rumdl.dev/md011/
+enabled = true
+
+[MD012]
+# 连续空行数量：https://rumdl.dev/md012/
+enabled = true
+maximum = 1  # 允许的连续空行上限
+
+[MD013]
+# 行长与段落重排：https://rumdl.dev/md013/
+# 不限制行长，保留中文段落、长链接和代码的原始换行。
+enabled = false
+abbreviations = []  # 额外识别的缩写词，供重排时判断句子边界
+atomic-spans = true  # true：重排时优先整体保留代码/强调片段；false：允许按词拆分，仍遵守代码保护条件
+blockquotes = true  # true：检查引用块行长；false：跳过引用块行长检查（strict=true 时仍检查）
+bracket-display-math = false  # true：将独立的 \[ ... \] 视为展示公式；false：按普通 Markdown 解析转义方括号
+break-words = []  # 用于辅助段落重排的断行词
+cjk-soft-break = "space"  # 中日韩文本软换行的连接方式
+code-blocks = true  # true：检查代码块行长；false：跳过代码块行长检查（strict=true 时仍检查）
+code-spans = true  # true：行内代码导致的超长也报告；false：去掉行内代码后不超限的行可豁免（strict=true 时仍有效）
+headings = true  # true：检查标题行长；false：跳过标题行长检查（strict=true 时仍检查）
+ignore-link-urls = true  # true：仅因行内链接/图片 URL 超长的行可豁免；false：URL 也计入行长（strict=true 时此项无效）
+length-mode = "visual"  # 按显示宽度计算行长
+line-length = 80  # 最大行长
+link-text-punctuation = "ignore"  # 重排时如何处理链接文字中的标点
+math-blocks = true  # true：检查展示公式行长；false：跳过纯展示公式行（strict=true 时仍检查）
+paragraphs = true  # true：检查普通段落和引用正文行长；false：跳过这些正文行（strict=true 时仍检查）
+reflow = false  # true：修复时重排长段落；false：只报告行长问题，不重排正文
+reflow-break-code-spans = true  # true：atomic-spans=false 时允许按词拆分行内代码；false：行内代码始终保持整体
+reflow-break-link-text = false  # true：重排时允许在链接/图片文字内部换行；false：整个链接/图片保持整体
+reflow-length-exemptions = false  # true：重排测量也采用 URL/代码豁免；false：重排按原始文本宽度测量，即使检查本身可豁免
+reflow-mode = "default"  # 段落重排模式
+require-sentence-capital = true  # true：句子边界后的新句需以大写开头；false：允许小写开头，其他句子边界条件仍生效
+# stern=true：只因最后一个词越界也报告，但整行只有一个不可拆分词元时仍豁免。
+# stern=false：保留默认的“仅最后一个词越界”豁免；strict=true 时两种取值都不起作用。
+stern = false
+# strict=false：保留 URL、不可换行内容等行长豁免，并按其他参数决定哪些内容跳过检查。
+# strict=true：取消这些行长豁免；单独的长 URL、代码块、表格等超长也会报告。
+# true 优先于 stern、ignore-link-urls 和代码块/表格等类别的跳过设置；仍使用对应行长上限。
+# code-spans=false 是独立例外：即使 strict=true，只有行内代码导致超长的行仍可豁免。
+# 例如一整行只有超过 line-length 的 URL：false 可以放过，true 会报告。
+strict = false
+tables = false  # true：检查表格行长；false：跳过表格行长检查（strict=true 时仍检查）
+# 自动 / 不设限制 — heading-line-length：不另设标题行长，自动继承 line-length。
+# 自动 / 不设限制 — code-block-line-length：不另设代码块行长，自动继承 line-length。
+
+[MD014]
+# 带 $ 提示符的命令是否展示输出：https://rumdl.dev/md014/
+# 示例命令供读者直接复制，不要求同时提供输出。
+enabled = false
+show-output = true  # true：检查本应有输出的 Shell 命令是否展示输出；false：不做这项缺少输出的检查
+
+[MD018]
+# ATX 标题的 # 后需要空格：https://rumdl.dev/md018/
+enabled = true
+magiclink = false  # true：把 #数字 识别为 MagicLink 特例；false：仍按缺少空格的标题检查
+# 自动 / 不设限制 — tags：不覆盖方言决定的标签识别行为；当前 standard 方言不启用标签特例。
+
+[MD019]
+# ATX 标题的 # 后不应有多余空格：https://rumdl.dev/md019/
+enabled = true
+
+[MD020]
+# 闭合式 ATX 标题的井号内侧需要空格：https://rumdl.dev/md020/
+enabled = true
+
+[MD021]
+# 闭合式 ATX 标题的井号内侧不应有多余空格：https://rumdl.dev/md021/
+enabled = true
+
+[MD022]
+# 标题前后的空行：https://rumdl.dev/md022/
+enabled = true
+allowed-at-start = true  # true：文档开头的标题可省略前置空行；false：开头也要求 lines-above 指定的空行
+lines-above = 1  # 标题前的空行数量
+lines-above-mode = "minimum"  # 标题前至少保留指定数量的空行
+lines-below = 1  # 标题后的空行数量
+
+[MD023]
+# 标题从行首开始：https://rumdl.dev/md023/
+# 允许缩进标题，保留原文用于嵌套表达的写法。
+enabled = false
+
+[MD024]
+# 重复标题文字：https://rumdl.dev/md024/
+# 不同章节可以使用相同的小节名称。
+enabled = false
+allow-different-link-anchors = true  # true：同名但 {#id} 不同的标题不算重复；false：忽略 {#id} 差异后比较标题文字
+allow-different-nesting = false  # true：不同标题级别可重名；false：不按级别豁免，仍受 siblings-only 的比较范围限制
+siblings-only = true  # true：只比较同一父标题下的同级标题；false：在整篇文档范围内检查重名
+
+[MD025]
+# 文档只保留一个主标题：https://rumdl.dev/md025/
+# 允许 Frontmatter 的 title 与正文 H1 并存，也保留多个一级标题。
+enabled = false
+allow-document-sections = false  # true：允许用水平线分隔独立文档章节及其主标题；false：不采用此多主标题例外
+allow-with-separators = false  # true：允许分隔章节使用多个主标题；false：不采用此多主标题例外
+front-matter-title = "title"  # 用于识别 Frontmatter 标题的设置
+level = 1  # 所检查的标题级别
+
+[MD026]
+# 标题末尾标点：https://rumdl.dev/md026/
+enabled = true
+punctuation = ".,;:!"  # 用于此规则判定的标点字符
+
+[MD027]
+# 引用标记 > 后的多余空格：https://rumdl.dev/md027/
+enabled = true
+list-items = false  # true：也检查引用块内列表及续行的额外空格；false：将这些空格按列表缩进保留
+
+[MD028]
+# 引用块之间的空行：https://rumdl.dev/md028/
+enabled = true
+fix = false  # true：修复时在间隔空行补 >，合并连续引用块；false：只报告，不合并引用块
+
+[MD029]
+# 有序列表编号风格：https://rumdl.dev/md029/
+# 有序列表使用 1.、2.、3. 递增编号。
+enabled = true
+style = "ordered"  # 此规则使用的风格
+
+[MD030]
+# 列表标记后的空格：https://rumdl.dev/md030/
+enabled = true
+ol-align-column = 0  # 有序列表正文固定对齐列；0 表示不指定
+ol-multi = 1  # 多行有序列表项标记后的空格
+ol-single = 1  # 单行有序列表项标记后的空格
+ul-multi = 1  # 多行无序列表项标记后的空格
+ul-single = 1  # 单行无序列表项标记后的空格
+
+[MD031]
+# 围栏代码块前后的空行：https://rumdl.dev/md031/
+enabled = true
+list-items = true  # true：列表项内的围栏代码也要求前后空行；false：只对列表外的围栏代码提出此要求
+
+[MD032]
+# 列表前后的空行：https://rumdl.dev/md032/
+enabled = true
+allow-lazy-continuation = true  # true：保留列表项普通文本的懒续行；false：列表边界需要的空行不因懒续行而豁免
+
+[MD033]
+# 正文中的 HTML 标签：https://rumdl.dev/md033/
+# 允许正文保留内联或块级 HTML，兼容文章中的自定义排版。
+enabled = false
+allowed-elements = []  # 允许出现的 HTML 标签
+allowed-inside = []  # 允许在指定 HTML 容器内使用标签
+br-style = "trailing-spaces"  # 转换 br 标签时使用的硬换行形式
+disallowed-elements = []  # 禁止出现的 HTML 标签
+drop-attributes = ["target", "rel", "width", "height", "align", "class", "id", "style"]  # 转换 HTML 时可以丢弃的属性
+fix = false  # true：修复时将可转换的 HTML 改为 Markdown；false：只报告，不转换 HTML
+fix-mode = "conservative"  # HTML 转换使用保守策略
+strip-wrapper-elements = ["p"]  # 转换 HTML 时可移除的包裹标签
+# 自动 / 不设限制 — table-allowed-elements：不另设表格内 HTML 白名单，继承 allowed-elements。
 
 [MD034]
-# 裸 URL 须包裹在尖括号中
+# 裸 URL 应使用链接或尖括号：https://rumdl.dev/md034/
+enabled = true
+
+[MD035]
+# 水平线标记风格：https://rumdl.dev/md035/
+enabled = true
+style = "consistent"  # 此规则使用的风格
+
+[MD036]
+# 将独立强调段落识别为标题：https://rumdl.dev/md036/
+# 保留中文文章用独立加粗段落强调内容的写法，不强制改为标题。
+enabled = false
+fix = false  # true：修复时把独立强调段落改为 heading-level 级标题；false：只报告，不把强调改成标题
+heading-level = 2  # 将独立强调段落转换为标题时使用的级别
+heading-style = "atx"  # 转换得到的标题使用的标记风格
+punctuation = ".,;:!?"  # 用于此规则判定的标点字符
+
+[MD037]
+# 强调标记内侧的多余空格：https://rumdl.dev/md037/
+enabled = true
+
+[MD038]
+# 行内代码标记内侧的多余空格：https://rumdl.dev/md038/
+enabled = true
 
 [MD039]
-# 链接文本内不应有多余空格
+# 链接文字内侧的多余空格：https://rumdl.dev/md039/
+enabled = true
+
+[MD040]
+# 围栏代码块的语言标签：https://rumdl.dev/md040/
+# 同一文档内统一语言标签；global.unfixable 禁止此规则的全部自动修复。
+enabled = true
+allowed-languages = []  # 允许的语言白名单；空列表不限制
+custom-languages = []  # 额外认可的自定义语言标签
+disallowed-languages = []  # 语言黑名单；白名单非空时忽略此项
+preferred-aliases = {}  # 指定语言的首选标签别名
+style = "consistent"  # 此规则使用的风格
+unknown-language-action = "ignore"  # 如何处理不认识的语言标签
+
+[MD041]
+# 文档开头的主标题：https://rumdl.dev/md041/
+# 规则支持 Frontmatter 标题；这里额外允许正文直接从章节或段落开始。
+enabled = false
+allow-preamble = false  # true：允许正文前言，检查随后首个顶层标题的级别；false：要求正文开头就是指定级别的标题
+fix = false  # true：修复时尝试调整或补充开头标题；false：只报告，不改写标题
+front-matter-title = "title"  # 用于识别 Frontmatter 标题的设置
+level = 1  # 所检查的标题级别
+# 自动 / 不设限制 — front-matter-title-pattern：不覆盖匹配模式，使用 front-matter-title 指定的字段。
 
 [MD042]
-# 不允许空链接
+# 空链接：https://rumdl.dev/md042/
+enabled = true
+
+[MD043]
+# 必需标题及其顺序：https://rumdl.dev/md043/
+enabled = true
+headings = []  # 要求存在的标题列表；空列表不增加结构要求
+match-case = false  # true：必需标题匹配时区分大小写；false：大小写不同仍可匹配
+
+[MD044]
+# 专有名词大小写：https://rumdl.dev/md044/
+# 保留原文专有名词大小写，不强制套用项目级名称列表。
+enabled = false
+code-blocks = false  # true：也检查代码块中的专有名词；false：跳过代码块中的名称检查
+html-comments = true  # true：检查 HTML 注释中的名称；false：跳过注释中的名称
+html-elements = true  # true：检查 HTML 元素中的名称；false：跳过这些元素中的名称
+names = []  # 需要统一大小写的专有名词列表
+whole-words = false  # true：只匹配独立词元，保留复合标识符内部名称；false：也匹配复合词中的名称
+# 自动 / 不设限制 — ignore-frontmatter-fields：不设置额外忽略字段，保留检查所有字段的行为。
+
+[MD045]
+# 图片替代文字：https://rumdl.dev/md045/
+# 保留现有缺少 alt 文字的图片，暂不强制补充描述。
+enabled = false
+
+[MD046]
+# 围栏式或缩进式代码块风格：https://rumdl.dev/md046/
+# 统一使用围栏代码块，不使用缩进式代码块。
+enabled = true
+style = "fenced"  # 此规则使用的风格
+
+[MD047]
+# 文件末尾恰好一个换行符：https://rumdl.dev/md047/
+enabled = true
+
+[MD048]
+# 代码围栏使用反引号或波浪号：https://rumdl.dev/md048/
+# 统一用反引号围栏，不使用 ~~~。
+enabled = true
+style = "backtick"  # 此规则使用的风格
+
+[MD049]
+# 斜体标记风格：https://rumdl.dev/md049/
+# 统一用 * 表示斜体。
+enabled = true
+style = "asterisk"  # 此规则使用的风格
+
+[MD050]
+# 粗体标记风格：https://rumdl.dev/md050/
+# 统一用 ** 表示粗体。
+enabled = true
+style = "asterisk"  # 此规则使用的风格
 
 [MD051]
-# 文档内锚点链接应指向实际存在的标题
+# 链接锚点应存在：https://rumdl.dev/md051/
+enabled = true
+anchor-style = "github"  # 标题锚点生成风格
+check-frontmatter = false  # true：也检查 Frontmatter 中路径形态值的锚点；false：只检查正文链接的锚点
+ignore-case = true  # true：#MY-HEADING 与 #my-heading 可匹配；false：片段必须与生成的锚点大小写完全一致
+ignore-frontmatter-fields = []  # 跳过这些 Frontmatter 字段
+# 自动 / 不设限制 — ignored-pattern：不设置锚点忽略正则，不额外跳过锚点检查。
 
 [MD052]
-# 引用式链接应使用已定义的引用标识符
+# 引用式链接和图片应有对应定义：https://rumdl.dev/md052/
+enabled = true
+ignore = []  # 额外忽略的匹配内容
+shortcut-syntax = false  # true：也检查 [文字] 是否有引用定义；false：不检查这种快捷引用，只检查明确的引用式链接
 
 [MD053]
-# 不应有未使用的引用链接定义
+# 未使用的链接和图片引用定义：https://rumdl.dev/md053/
+enabled = true
+ignored-definitions = []  # 允许存在但未被引用的链接定义
 
-[MD057]
-# 相对链接应指向实际存在的文件
-# 把 `/` 开头视为相对项目根的文件路径（KB 不是发布站点，没有 URL 路由概念）
-absolute-links = "relative_to_roots"
-roots = [""]
-
-[MD062]
-# 链接目标不应有多余的前导/尾随空格
-
-# ── 表格 ──
+[MD054]
+# 允许的链接和图片语法风格：https://rumdl.dev/md054/
+enabled = true
+autolink = true  # true：允许 <https://example.com>；false：这种尖括号自动链接会报告风格问题
+collapsed = true  # true：允许 [文字][]；false：这种省略标签的引用式链接会报告风格问题
+full = true  # true：允许 [文字][标签]；false：这种完整引用式链接会报告风格问题
+inline = true  # true：允许 [文字](地址)；false：这种行内链接会报告风格问题
+preferred-style = "auto"  # 链接修复时使用的首选风格
+shortcut = true  # true：允许使用已定义引用的 [文字]；false：这种快捷引用式链接会报告风格问题
+url-inline = true  # true：允许 [URL](URL)；false：链接文字直接重复 URL 时报告风格问题
 
 [MD055]
-# 表格管道符风格须一致
+# 表格两侧管道符风格：https://rumdl.dev/md055/
+enabled = true
+style = "consistent"  # 此规则使用的风格
 
 [MD056]
-# 表格每行列数须一致
+# 表格各行列数一致：https://rumdl.dev/md056/
+enabled = true
+
+[MD057]
+# 本地文件链接应存在：https://rumdl.dev/md057/
+# / 开头的路径按本地项目根目录解析，不作为 Hugo 发布后的 URL 路由解析。
+enabled = true
+absolute-links = "relative_to_roots"  # / 开头链接的处理方式
+check-frontmatter = false  # true：也检查 Frontmatter 中路径形态值指向的本地文件；false：不检查 Frontmatter 中的路径
+compact-paths = false  # true：报告可缩短的等价路径；false：接受虽冗长但可正常解析的路径
+ignore-frontmatter-fields = []  # 跳过这些 Frontmatter 字段
+roots = [""]  # 空字符串表示项目根目录
+search-paths = []  # 额外的本地链接搜索目录
+self-referential-links = false  # true：报告写出当前文件名的自引用链接；false：允许这类链接
 
 [MD058]
-# 表格前后须有空行
+# 表格前后的空行：https://rumdl.dev/md058/
+enabled = true
+minimum-after = 1  # 表格后至少保留的空行数量
+minimum-before = 1  # 表格前至少保留的空行数量
+
+[MD059]
+# 链接文字应有描述性：https://rumdl.dev/md059/
+# 允许原文使用 [1]、[2] 等简短链接文字。
+enabled = false
+prohibited-texts = ["click here", "here", "link", "more"]  # 缺乏描述性的链接文字
 
 [MD060]
-# 表格列对齐风格须一致
+# 表格对齐、空格和宽度格式：https://rumdl.dev/md060/
+# 延续此前未启用此规则的状态，不统一重排现有表格。
+enabled = false
+aligned-delimiter = false  # true：compact/tight 风格的分隔线补齐到表头列宽；false：分隔线使用最少连字符
+column-align = "auto"  # 表格列的默认对齐方式
+loose-last-column = false  # true：最后一列只按表头宽度补齐，较长正文直接延伸；false：整列按最长单元格补齐（用于 aligned 风格）
+max-width = 0  # 表格最大宽度；0 表示从 MD013 取得宽度
+style = "any"  # 此规则使用的风格
+# 自动 / 不设限制 — column-align-header：不单独指定，继承 column-align。
+# 自动 / 不设限制 — column-align-body：不单独指定，继承 column-align。
+# 自动 / 不设限制 — pad-width：不固定填充宽度，按 style 自动选择。
 
-[MD075]
-# 检测孤立的表格行
+[MD061]
+# 禁用词语：https://rumdl.dev/md061/
+enabled = true
+case-sensitive = true  # true：禁用词匹配区分大小写；false：大小写不同也算匹配
+terms = []  # 禁用词语及其替换设置
 
-# ── 脚注 ──
+[MD062]
+# 链接目标前后的空白：https://rumdl.dev/md062/
+enabled = true
+
+[MD063]
+# 英文标题大小写风格：https://rumdl.dev/md063/
+# 延续此前未启用此规则的状态，不统一英文标题大小写。
+enabled = false
+ignore-words = []  # 保留这些词语的原始大小写
+# 英文标题中保持小写的词语
+lowercase-words = [
+  "a",
+  "an",
+  "and",
+  "as",
+  "at",
+  "but",
+  "by",
+  "for",
+  "from",
+  "in",
+  "into",
+  "nor",
+  "of",
+  "off",
+  "on",
+  "or",
+  "per",
+  "so",
+  "the",
+  "to",
+  "up",
+  "via",
+  "with",
+  "yet",
+]
+max-level = 6  # 检查的最大标题级别
+min-level = 1  # 检查的最小标题级别
+preserve-cased-words = true  # true：保留 GitHub、iPhone 等内部含大写字母的词；false：也按 style 改写这些词的大小写
+sentence-case-restart-after = []  # 这些标点后重新开始句式大小写
+style = "title-case"  # 此规则使用的风格
+
+[MD064]
+# 正文中连续多个空格：https://rumdl.dev/md064/
+enabled = true
+allow-sentence-double-space = false  # true：允许句末 .!? 后恰好两个空格；false：这种句末双空格也报告
+
+[MD065]
+# 水平线前后的空行：https://rumdl.dev/md065/
+enabled = true
 
 [MD066]
-# 脚注引用应指向已定义的脚注
+# 脚注引用与定义匹配：https://rumdl.dev/md066/
+# 保持关闭，暂不检查脚注引用与定义是否完整匹配。
 enabled = false
 
 [MD067]
-# 脚注定义应按首次引用顺序排列
+# 脚注定义按首次引用顺序排列：https://rumdl.dev/md067/
+# 保留现有脚注定义的排列顺序。
 enabled = false
 
 [MD068]
-# 脚注定义不应为空
+# 脚注定义不应为空：https://rumdl.dev/md068/
+enabled = true
 
-# ── Frontmatter ──
+[MD069]
+# 重复的列表标记：https://rumdl.dev/md069/
+enabled = true
+
+[MD070]
+# 嵌套代码围栏长度冲突：https://rumdl.dev/md070/
+# 显式启用，避免嵌套围栏被过早闭合。
+enabled = true
 
 [MD071]
-# frontmatter 之后须有空行
+# Frontmatter 后的空行：https://rumdl.dev/md071/
+enabled = true
 
 [MD072]
-enabled = false # frontmatter key 不按字母顺序排列
-# ── 空白 ──
-
-[MD009]
-# 行尾不应有尾随空格
-
-[MD010]
-# 不应用 tab 缩进
-
-[MD012]
-# 不应有连续多个空行
-
-[MD035]
-# 水平线风格须一致
-
-[MD047]
-# 文件末尾应恰好有一个换行符
-
-[MD064]
-# 行内不应有多个连续空格
-
-[MD065]
-# 水平线前后须有空行
-
-# ── 图片 ──
-
-[MD045]
-enabled = false # 图片不一定需要 alt 文本（目前很多文章没有，以后多模态识别可能可以自动生成）
-
-# ── 其他 ──
-
-[MD038]
-# 代码 span 内不应有多余空格
-
-[MD063]
-# 标题首字母大写风格须一致
+# Frontmatter 键排序及必需键：https://rumdl.dev/md072/
+# 不按字母顺序重排 Frontmatter 的键。
+enabled = false
+required-keys = []  # Frontmatter 必须包含的键
+# 自动 / 不设限制 — key-order：不设置自定义排序名单；此规则已关闭，不重排现有键。
 
 [MD073]
-# 目录应与文档实际标题匹配
+# 正文目录应匹配实际标题：https://rumdl.dev/md073/
+# 延续此前未启用此规则的状态，不校验正文中的手写目录。
+enabled = false
+enforce-order = true  # true：目录条目顺序必须与正文标题一致；false：不要求顺序一致，仍检查条目内容
+indent = 2  # 目录每级缩进 2 个空格，与 MD007 一致
+max-level = 4  # 检查的最大标题级别
+min-level = 2  # 检查的最小标题级别
+
+[MD074]
+# MkDocs 导航配置与文档文件匹配：https://rumdl.dev/md074/
+enabled = false
+absolute-links = "ignore"  # / 开头链接的处理方式
+not-found = "warn"  # 导航目标文件不存在时报告警告
+omitted-files = "ignore"  # 如何处理未列入导航的文件
+
+[MD075]
+# 孤立的表格行或缺少表头的管道符内容：https://rumdl.dev/md075/
+enabled = true
+
+[MD076]
+# 列表项之间的空行风格：https://rumdl.dev/md076/
+# 相邻列表项保持紧凑，同一项内部的续行段落可以前后留空行。
+enabled = true
+allow-loose-continuation = true  # true：紧凑列表项内的续行段落可前后留空行；false：tight 风格下这些空行也报告
+style = "tight"  # 此规则使用的风格
+
+[MD077]
+# 列表续行内容缩进：https://rumdl.dev/md077/
+# 保留自动计算续行列和允许普通文本懒续行的行为。
+enabled = true
+style = "any"  # 此规则使用的风格
+# 自动 / 不设限制 — indent：不固定续行缩进，继续按列表标记和正文列自动推导。
+
+[MD078]
+# Quarto 可执行代码块需要标签：https://rumdl.dev/md078/
+enabled = true
+
+[MD079]
+# Quarto 代码块标签不应包含空白：https://rumdl.dev/md079/
+enabled = true
+
+[MD080]
+# 标题生成的锚点不应冲突：https://rumdl.dev/md080/
+enabled = false
+anchor-style = "github"  # 标题锚点生成风格
+levels = [1, 2, 3, 4, 5, 6]  # 所检查的标题级别列表
+
+[MD081]
+# 段落中过度使用强调标记：https://rumdl.dev/md081/
+enabled = true
+targets = "strong"  # 计入强调次数的标记类型
+# 自动 / 不设限制 — max-per-paragraph：不设置段落强调次数上限。
+# 自动 / 不设限制 — max-consecutive：不设置连续强调次数上限。
+
+[MD082]
+# 空章节：https://rumdl.dev/md082/
+enabled = false
+allow-parent-headings = false  # true：仅含子章节的父标题不算空章节；false：父标题自身也必须先有正文
+level = 1  # 所检查的标题级别
+
+[MD083]
+# 乱码文本：https://rumdl.dev/md083/
+enabled = false
+ignore = []  # 额外忽略的匹配内容
+ignore-code-blocks = true  # true：跳过代码块中的乱码检查；false：代码块也检查乱码
+
+[MD084]
+# 不可见字符：https://rumdl.dev/md084/
+enabled = false
+allow = []  # 额外允许的字符或样式
+# strict=false：报告连着出现、位于行首/行尾或紧邻空白的可疑不可见字符，
+# 以及 Unicode 已弃用或不适合标记文本的码位；夹在可见文字之间的正常用法通常保留。
+# strict=true：任何位置检测到的目标不可见字符都报告，包括 emoji 使用的变体选择符/连接符。
+# 例如 a<U+200B>b 在 false 模式通常保留，在 true 模式报告；其中 U+200B 是零宽空格。
+# 两种模式都跳过 allow 白名单和换行符；true 不会取消这两项例外。
+strict = false
+
+[MD085]
+# 段落续行缩进：https://rumdl.dev/md085/
+enabled = false
+
+[MD086]
+# 未闭合的注释：https://rumdl.dev/md086/
+enabled = true
+
+[MD087]
+# 未使用的规则禁用注释：https://rumdl.dev/md087/
+enabled = false
+
+[MD088]
+# 引号和破折号样式：https://rumdl.dev/md088/
+enabled = false
+allow = []  # 额外允许的字符或样式
+normalize-dashes = false  # true：将 Unicode 破折号统一为 ASCII 连字符；false：保留破折号原样（allow 白名单始终保留）
+normalize-quotes = true  # true：将 Unicode 引号统一为 ASCII 引号；false：保留引号原样（allow 白名单始终保留）
+
+[MD089]
+# 中日韩文字与其他字符之间的空格：https://rumdl.dev/md089/
+enabled = false
+symbols-after-cjk = "-+'\"([¥$"  # 紧接中日韩文字之后时需要检查空格的符号
+symbols-before-cjk = "-+;:'\"°%$)]"  # 紧接中日韩文字之前时需要检查空格的符号
+
+[MD090]
+# 标题前的水平线：https://rumdl.dev/md090/
+enabled = false
+
+[MD091]
+# HTML 块中未被渲染的 Markdown：https://rumdl.dev/md091/
+enabled = false
+
+[MD092]
+# 未解决的合并冲突标记：https://rumdl.dev/md092/
+enabled = true
+
+[MD093]
+# 标题中的行内格式：https://rumdl.dev/md093/
+enabled = false
+code = true  # true：标题中的行内代码标记会报告；false：允许标题使用行内代码
+emphasis = true  # true：标题中的斜体标记会报告；false：允许标题使用斜体
+strong = true  # true：标题中的粗体标记会报告；false：允许标题使用粗体
+
+[MD094]
+# 文件必须是有效 UTF-8：https://rumdl.dev/md094/
+enabled = true
+
+[MD095]
+# 链接中的易混淆字符：https://rumdl.dev/md095/
+enabled = false
+
+[MD096]
+# 按指定列排序表格：https://rumdl.dev/md096/
+enabled = false
+order = "asc"  # 排序方向
+# 自动 / 不设限制 — column：不设置排序列；此规则已关闭，不重排表格。

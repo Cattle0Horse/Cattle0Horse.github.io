@@ -46,7 +46,7 @@ path = "/notes"
   [markup.highlight]
     guessSyntax = true
     noClasses = false
-    style = "tango"
+    # 语法颜色由主题 CSS 管理，随明暗模式与 colorScheme 切换。
     tabWidth = 2
   [markup.tableOfContents]
     startLevel = 2
@@ -61,6 +61,10 @@ favicon = "/logo.png"
 extraCSSFiles = ["css/background.css"]
 tableOfContents = true
 codeMaxLines = 15
+
+[params.codeBlock]
+lineNumbers = false # 默认不显示行号；围栏中的 linenos 可覆盖
+wrap = false        # 默认不自动换行，长行横向滚动
 
 [params.busuanzi]
 enabled = true
